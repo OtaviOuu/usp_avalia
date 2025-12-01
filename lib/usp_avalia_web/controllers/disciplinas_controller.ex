@@ -7,7 +7,6 @@ defmodule UspAvaliaWeb.DisciplinasController do
 
   def index(conn, _params) do
     disciplinas = Avaliacoes.list_disciplinas()
-    dbg(disciplinas)
     render(conn, disciplinas: disciplinas)
   end
 end
