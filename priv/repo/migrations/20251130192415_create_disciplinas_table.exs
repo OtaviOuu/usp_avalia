@@ -7,6 +7,9 @@ defmodule UspAvalia.Repo.Migrations.CreateDisciplinasTable do
       add :codigo, :string, null: false
       add :nome, :string, null: false
       add :instituto, :string, null: false
+
+      add :inserted_at, :utc_datetime, null: false, default: fragment("now()")
+      add :updated_at, :utc_datetime, null: false, default: fragment("now()")
     end
   end
 end

@@ -16,14 +16,12 @@ defmodule UspAvaliaWeb.Router do
 
   scope "/", UspAvaliaWeb do
     pipe_through :browser
-
-    get "/", PageController, :home
   end
 
   scope "/api", UspAvaliaWeb do
     pipe_through :api
 
-    resources "/disciplinas", DisciplinaController, except: [:new, :edit]
+    get "/disciplinas", DisciplinasController, :index
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
