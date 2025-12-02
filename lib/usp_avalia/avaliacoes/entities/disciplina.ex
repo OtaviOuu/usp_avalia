@@ -2,6 +2,8 @@ defmodule UspAvalia.Avaliacoes.Entities.Disciplina do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias UspAvalia.Avaliacoes.Entities.Professor
+
   @fields [:codigo, :nome, :instituto]
   @required_fields []
 
@@ -10,6 +12,8 @@ defmodule UspAvalia.Avaliacoes.Entities.Disciplina do
     field :codigo, :string
     field :nome, :string
     field :instituto, :string
+
+    many_to_many :professores, Professor, join_through: "professores_disciplinas"
 
     timestamps(type: :utc_datetime)
   end
