@@ -35,35 +35,40 @@ defmodule UspAvaliaWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
+    <div class="navbar bg-base-100 shadow-sm">
+      <div class="navbar-start">
+        <div class="dropdown">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <.icon name="hero-bars-3" class="size-5" />
+          </div>
+          <ul
+            tabindex="-1"
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+          >
+            <li><a>Homepage</a></li>
+            <li><a>Portfolio</a></li>
+            <li><a>About</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
+      <div class="navbar-center">
+        <a class="btn btn-ghost text-xl">daisyUI</a>
       </div>
-    </header>
+      <div class="navbar-end">
+        <button class="btn btn-ghost btn-circle">
+          <.icon name="hero-magnifying-glass" class="size-5" />
+        </button>
+        <button class="btn btn-ghost btn-circle">
+          <div class="indicator">
+            <.icon name="hero-bell" class="size-5" />
+            <span class="badge badge-xs badge-primary indicator-item"></span>
+          </div>
+        </button>
+      </div>
+    </div>
 
     <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
+      <div class="mx-auto">
         {render_slot(@inner_block)}
       </div>
     </main>

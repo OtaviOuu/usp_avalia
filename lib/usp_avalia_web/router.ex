@@ -58,6 +58,16 @@ defmodule UspAvaliaWeb.Router do
     post "/users/update-password", UserSessionController, :update_password
   end
 
+  scope "/disciplinas", UspAvaliaWeb do
+    pipe_through [:browser]
+
+    live_session :disciplinas,
+      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+      live "/", DisciplinaLive.Index, :index
+      live "/:codigo", DisciplinaLive.Show, :show
+    end
+  end
+
   scope "/", UspAvaliaWeb do
     pipe_through [:browser]
 
