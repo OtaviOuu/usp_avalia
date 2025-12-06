@@ -65,6 +65,7 @@ defmodule UspAvaliaWeb.Router do
       on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
       live "/", DisciplinaLive.Index, :index
       live "/:codigo", DisciplinaLive.Show, :show
+      live "/:codigo/:professor_id/avaliar", DisciplinaLive.Avaliar
     end
   end
 

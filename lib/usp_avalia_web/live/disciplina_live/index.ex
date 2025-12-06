@@ -30,7 +30,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
           <tr>
             <th>Codigo</th>
             <th>Nome</th>
-            <th>Professor</th>
           </tr>
         </thead>
         <tbody>
@@ -41,7 +40,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
           >
             <td>{disciplina.codigo}</td>
             <td>{disciplina.nome}</td>
-            <td>Carlos</td>
           </tr>
         </tbody>
       </table>

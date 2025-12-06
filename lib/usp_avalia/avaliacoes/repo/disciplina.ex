@@ -8,4 +8,8 @@ defmodule UspAvalia.Avaliacoes.Repo.Disciplina do
     Disciplina
     |> Repo.all()
   end
+
+  def get_by_code(code) do
+    Repo.get_by(Disciplina, codigo: code)
+  end
 end

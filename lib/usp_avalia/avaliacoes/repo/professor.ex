@@ -14,6 +14,18 @@ defmodule UspAvalia.Avaliacoes.Repo.Professor do
     end
   end
 
+  def get_all_by_disciplina_codigo(codigo) do
+    query =
+      from p in Professor,
+        join: d in assoc(p, :disciplinas),
+        where: d.codigo == ^codigo,
+        preload: [:disciplinas]
+
+    query
+    |> Repo.all()
+    |> feed_numero_disciplinas()
+  end
+
   def get_all do
     Professor
     |> preload(:disciplinas)
@@ -21,6 +33,7 @@ defmodule UspAvalia.Avaliacoes.Repo.Professor do
     |> feed_numero_disciplinas()
   end
 
+  # fazer na db
   defp feed_numero_disciplinas(professores) do
     Enum.map(professores, fn professor ->
       numero_disciplinas = length(professor.disciplinas || [])
