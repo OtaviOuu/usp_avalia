@@ -10,6 +10,10 @@ defmodule UspAvalia.Avaliacoes do
     to: Repo.Professor,
     as: :get_all_by_disciplina_codigo
 
+  defdelegate list_avaliacoes_by_code_and_professor(disciplina_id, professor_id),
+    to: Repo.Avaliacao,
+    as: :list_by_code_and_professor
+
   defdelegate create_avaliacao(scope, attrs), to: Avaliacoes.UseCases.CreateAvaliacao, as: :call
 
   defdelegate get_professor_by_id(id), to: Repo.Professor, as: :get_by_id

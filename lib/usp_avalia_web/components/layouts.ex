@@ -52,7 +52,7 @@ defmodule UspAvaliaWeb.Layouts do
         </div>
       </div>
       <div class="navbar-center">
-        <a class="btn btn-ghost text-xl">daisyUI</a>
+        <.link navigate="/disciplinas" class="btn btn-ghost text-xl">daisyUI</.link>
       </div>
       <div class="navbar-end">
         <button class="btn btn-ghost btn-circle">
