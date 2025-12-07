@@ -30,8 +30,15 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
       <h1>Disciplina: {@disciplina.codigo}</h1>
       <h1>Professor: {@professor.nome}</h1>
       <.form for={@form_avaliacao} phx-submit="save">
-        <.input field={@form_avaliacao[:nota]} type="number" min="1" max="5" />
-        <.input field={@form_avaliacao[:comentario]} type="textarea" />
+        <.input
+          field={@form_avaliacao[:nota]}
+          type="number"
+          min="0"
+          max="10"
+          step="1"
+          label="Nota"
+        />
+        <.input field={@form_avaliacao[:comentario]} type="textarea" label="Comentário" rows="10" />
         <.button type="submit">Enviar Avaliação</.button>
       </.form>
     </Layouts.app>
@@ -58,8 +65,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
         {:noreply, socket}
 
       {:error, changeset} ->
-        IO.inspect(changeset)
-
         socket =
           socket
           |> assign(:form_avaliacao, changeset |> to_form())

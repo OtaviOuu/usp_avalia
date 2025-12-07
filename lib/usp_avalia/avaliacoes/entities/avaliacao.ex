@@ -28,7 +28,11 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
   defp validate(changeset) do
     changeset
     |> validate_required(@fields)
-    |> validate_inclusion(:nota, 1..5)
+    |> validate_inclusion(:nota, 0..10)
+    |> validate_length(:comentario,
+      min: 2,
+      max: 255
+    )
   end
 
   defp relate(changeset, scope) do
