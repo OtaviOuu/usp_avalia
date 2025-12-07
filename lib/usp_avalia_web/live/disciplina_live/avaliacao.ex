@@ -14,6 +14,9 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       |> assign(:professor, professor)
       |> assign(:disciplina, disciplina)
       |> assign(:avaliacoes, avaliacoes)
+      |> assign_nota_media(avaliacoes)
+      # bad :(
+      |> assign(:quantidade_avaliacoes, length(avaliacoes))
 
     {:ok, socket}
   end
@@ -26,15 +29,13 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title">Nota média</div>
-          <div class="stat-value">89,400</div>
-          <div class="stat-desc">21% more than last month</div>
+          <div class="stat-value">{@nota_media}</div>
         </div>
       </div>
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title">Quantas vezes avaliado</div>
-          <div class="stat-value">89,400</div>
-          <div class="stat-desc">21% more than last month</div>
+          <div class="stat-value">{@quantidade_avaliacoes}</div>
         </div>
       </div>
       <p>{@disciplina.nome} ({@disciplina.codigo})</p>
@@ -49,5 +50,20 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       </.table>
     </Layouts.app>
     """
+  end
+
+  # baaaaaaaaaaaaaaad
+  defp assign_nota_media(socket, avaliacoes) do
+    nota_media =
+      case avaliacoes do
+        [] ->
+          0.0
+
+        _ ->
+          total = Enum.reduce(avaliacoes, 0, fn a, acc -> acc + a.nota end)
+          total / length(avaliacoes)
+      end
+
+    assign(socket, :nota_media, nota_media)
   end
 end
