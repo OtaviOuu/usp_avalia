@@ -15,6 +15,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       |> assign(:disciplina, disciplina)
       |> assign(:avaliacoes, avaliacoes)
       |> assign_nota_media(avaliacoes)
+      |> assign(:codigo, codigo)
       # bad :(
       |> assign(:quantidade_avaliacoes, length(avaliacoes))
 
@@ -44,10 +45,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       }>
         avaliar
       </.button>
-      <.table id="avaliacoes" rows={@avaliacoes}>
-        <:col :let={avaliacao} label="comentario">{avaliacao.comentario}</:col>
-        <:col :let={avaliacao} label="nota">{avaliacao.nota}</:col>
-      </.table>
+      <.avaliacoes_table avaliacoes={@avaliacoes} professor={@professor} disciplina_code={@codigo} />
     </Layouts.app>
     """
   end
@@ -65,5 +63,34 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       end
 
     assign(socket, :nota_media, nota_media)
+  end
+
+  defp avaliacoes_table(assigns) do
+    ~H"""
+    <div class="overflow-x-auto w-full">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Comentário</th>
+            <th>Nota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            :for={avaliacao <- @avaliacoes}
+            phx-click={
+              JS.navigate(
+                "/disciplinas/#{@disciplina_code}/professores/#{@professor.id}/avaliacoes/#{avaliacao.id}"
+              )
+            }
+            class="hover:cursor-pointer hover:bg-base-200"
+          >
+            <td>{avaliacao.comentario}</td>
+            <td>{avaliacao.nota}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    """
   end
 end

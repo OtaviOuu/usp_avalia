@@ -68,6 +68,9 @@ defmodule UspAvaliaWeb.Router do
       live "/:codigo", DisciplinaLive.Show, :show
       live "/:codigo/professores/:professor_id", DisciplinaLive.Avaliacao, :show
       live "/:codigo/professores/:professor_id/avaliar", DisciplinaLive.Avaliar
+
+      live "/:codigo/professores/:professor_id/avaliacoes/:avaliacao_id",
+           DisciplinaLive.Avaliacao.Show
     end
   end
 

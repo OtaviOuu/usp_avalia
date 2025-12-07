@@ -18,6 +18,7 @@ defmodule UspAvalia.Avaliacoes do
 
   defdelegate get_professor_by_id(id), to: Repo.Professor, as: :get_by_id
   defdelegate get_disciplina_by_code(code), to: Repo.Disciplina, as: :get_by_code
+  defdelegate get_avaliacao_by_id(id), to: Repo.Avaliacao, as: :get_by_id
 
   defdelegate change_avaliacao(attrs, scope),
     to: Avaliacoes.Entities.Avaliacao,

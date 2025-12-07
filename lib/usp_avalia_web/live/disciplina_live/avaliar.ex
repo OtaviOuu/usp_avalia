@@ -3,6 +3,8 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
 
   alias UspAvalia.Avaliacoes
 
+  on_mount {UspAvaliaWeb.UserAuth, :require_authenticated}
+
   def mount(%{"codigo" => codigo, "professor_id" => professor_id}, _session, socket) do
     {:ok, professor} = Avaliacoes.get_professor_by_id(professor_id)
     disciplina = Avaliacoes.get_disciplina_by_code(codigo)
@@ -47,7 +49,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
     IO.inspect(attrs)
 
     case Avaliacoes.create_avaliacao(scope, attrs) do
-      {:ok, avaliacao} ->
+      {:ok, _avaliacao} ->
         socket =
           socket
           |> put_flash(:info, "Avaliação criada com sucesso!")

@@ -52,18 +52,12 @@ defmodule UspAvaliaWeb.Layouts do
         </div>
       </div>
       <div class="navbar-center">
-        <.link navigate="/disciplinas" class="btn btn-ghost text-xl">daisyUI</.link>
+        <.link navigate="/disciplinas" class="btn btn-ghost text-xl">USP avalia</.link>
       </div>
       <div class="navbar-end">
-        <button class="btn btn-ghost btn-circle">
-          <.icon name="hero-magnifying-glass" class="size-5" />
-        </button>
-        <button class="btn btn-ghost btn-circle">
-          <div class="indicator">
-            <.icon name="hero-bell" class="size-5" />
-            <span class="badge badge-xs badge-primary indicator-item"></span>
-          </div>
-        </button>
+        <div>
+          <.theme_toggle />
+        </div>
       </div>
     </div>
 
@@ -72,7 +66,6 @@ defmodule UspAvaliaWeb.Layouts do
         {render_slot(@inner_block)}
       </div>
     </main>
-
     <.flash_group flash={@flash} />
     """
   end
