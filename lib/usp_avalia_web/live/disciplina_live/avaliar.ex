@@ -68,6 +68,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
         socket =
           socket
           |> assign(:form_avaliacao, changeset |> to_form())
+          |> put_flash(:error, "Erro ao criar avaliação. Vc é aluno usp?")
 
         {:noreply, socket}
     end

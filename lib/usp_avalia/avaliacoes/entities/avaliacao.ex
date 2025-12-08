@@ -21,13 +21,14 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
   def changeset(attrs, scope) do
     %__MODULE__{}
     |> cast(attrs, @fields)
-    |> validate()
+    |> validate(scope)
     |> relate(scope)
   end
 
-  defp validate(changeset) do
+  defp validate(changeset, scope) do
     changeset
     |> validate_required(@fields)
+    |> validate_is_email_usp(scope)
     |> validate_inclusion(:nota, 0..10)
     |> validate_length(:comentario,
       min: 2,
@@ -38,5 +39,13 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
   defp relate(changeset, scope) do
     changeset
     |> put_assoc(:author, scope.user)
+  end
+
+  defp validate_is_email_usp(changeset, %{user: %{email: email} = _scope}) do
+    if String.ends_with?(email, "@usp.br") do
+      changeset
+    else
+      add_error(changeset, :author, "must have a USP email")
+    end
   end
 end
