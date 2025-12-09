@@ -15,7 +15,9 @@ defmodule UspAvalia.Application do
       # Start a worker by calling: UspAvalia.Worker.start_link(arg)
       # {UspAvalia.Worker, arg},
       # Start to serve requests, typically the last entry
-      UspAvaliaWeb.Endpoint
+      UspAvaliaWeb.Endpoint,
+      UspAvalia.ComandedApp,
+      UspAvalia.ProfilesVerifications.ProfileVerificationHandler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

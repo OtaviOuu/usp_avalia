@@ -7,6 +7,21 @@
 # General application configuration
 import Config
 
+config :usp_avalia, UspAvalia.ComandedApp,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: UspAvalia.EventStore
+  ]
+
+config :usp_avalia, event_stores: [UspAvalia.EventStore]
+
+config :usp_avalia, UspAvalia.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "usp_avalia_dev_event_store",
+  hostname: "localhost"
+
 config :usp_avalia, :scopes,
   user: [
     default: true,

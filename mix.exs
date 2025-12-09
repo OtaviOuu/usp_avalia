@@ -66,7 +66,10 @@ defmodule UspAvalia.MixProject do
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:commanded, "~> 1.4"},
+      # <--- adicione esta linha
+      {:commanded_eventstore_adapter, ">= 1.0.0"}
     ]
   end
 
