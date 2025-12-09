@@ -53,8 +53,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
       |> Map.put("professor_id", socket.assigns.professor.id)
       |> Map.put("disciplina_id", socket.assigns.disciplina.id)
 
-    IO.inspect(attrs)
-
     case Avaliacoes.create_avaliacao(scope, attrs) do
       {:ok, _avaliacao} ->
         socket =

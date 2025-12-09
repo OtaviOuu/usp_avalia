@@ -6,6 +6,7 @@ defmodule UspAvalia.Repo.Migrations.CreateUsersAuthTables do
 
     create table(:users) do
       add :email, :citext, null: false
+      add :verified, :boolean, default: false, null: false
       add :hashed_password, :string
       add :confirmed_at, :utc_datetime
 

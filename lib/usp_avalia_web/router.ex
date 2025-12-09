@@ -74,6 +74,15 @@ defmodule UspAvaliaWeb.Router do
     end
   end
 
+  scope "/perfils", UspAvaliaWeb do
+    pipe_through [:browser]
+
+    live_session :profiles,
+      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+      live "/verificar", ProfileLive.VerificarForm, :new
+    end
+  end
+
   scope "/professores", UspAvaliaWeb do
     pipe_through [:browser]
 

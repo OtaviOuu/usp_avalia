@@ -50,6 +50,11 @@ defmodule UspAvaliaWeb.Layouts do
             <li><a>About</a></li>
           </ul>
         </div>
+        <div>
+          <.link navigate="/perfils/verificar" class="btn btn-ghost underline">
+            Verificar Perfil
+          </.link>
+        </div>
       </div>
       <div class="navbar-center">
         <.link navigate="/disciplinas" class="btn btn-ghost text-xl">USP avalia</.link>
