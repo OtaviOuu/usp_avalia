@@ -14,7 +14,7 @@ defmodule UspAvalia.Avaliacoes.UseCases.SearchDisciplinas do
         ilike(fragment("LOWER(?)", d.codigo), ^"%#{query_downcased}%") or
         ilike(fragment("LOWER(?)", d.instituto), ^"%#{query_downcased}%")
     )
-    |> limit(10)
+    |> limit(15)
     |> Repo.all()
   end
 end

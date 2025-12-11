@@ -26,19 +26,21 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 ">
         <div class="card bg-base-100 shadow-xl p-6">
           <h1 class="text-2xl font-bold mb-4">Buscar Disciplinas</h1>
 
           <.form for={%{}} phx-change="search" class="flex gap-2">
-            <.input
-              phx-debounce="300"
-              type="text"
-              name="q"
-              value={@query}
-              placeholder="Filtrar por nome ou código"
-              class="input input-bordered w-full"
-            />
+            <div class="relative w-full">
+              <.input
+                phx-debounce="300"
+                type="text"
+                name="q"
+                value={@query}
+                placeholder="Filtrar por nome ou código"
+                class="input input-bordered w-full"
+              />
+            </div>
           </.form>
         </div>
 

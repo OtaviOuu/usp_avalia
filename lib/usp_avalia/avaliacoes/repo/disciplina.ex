@@ -5,7 +5,7 @@ defmodule UspAvalia.Avaliacoes.Repo.Disciplina do
   alias UspAvalia.Avaliacoes.Entities.Disciplina
   import Ecto.Query, warn: false
 
-  def get_all(limit \\ 5) when is_integer(limit) do
+  def get_all(limit \\ 15) when is_integer(limit) do
     Disciplina
     |> limit(^limit)
     |> Repo.all()
