@@ -23,4 +23,8 @@ defmodule UspAvalia.Avaliacoes do
   defdelegate change_avaliacao(attrs, scope),
     to: Avaliacoes.Entities.Avaliacao,
     as: :changeset
+
+  defdelegate search_disciplinas(query),
+    to: UspAvalia.Avaliacoes.UseCases.SearchDisciplinas,
+    as: :call
 end

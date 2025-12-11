@@ -4,9 +4,23 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
   alias UspAvalia.Avaliacoes
 
   def mount(_params, _session, socket) do
-    disciplinas = Avaliacoes.list_disciplinas()
+    {:ok, socket}
+  end
 
-    {:ok, assign(socket, disciplinas: disciplinas, query: "")}
+  def handle_params(%{"q" => q}, _url, socket) do
+    disciplinas = Avaliacoes.search_disciplinas(q)
+
+    socket =
+      socket
+      |> assign(disciplinas: disciplinas)
+      |> assign(query: q)
+
+    {:noreply, socket}
+  end
+
+  def handle_params(_, _url, socket) do
+    disciplinas = Avaliacoes.list_disciplinas()
+    {:noreply, assign(socket, disciplinas: disciplinas, query: "")}
   end
 
   def render(assigns) do
@@ -16,15 +30,16 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
         <div class="card bg-base-100 shadow-xl p-6">
           <h1 class="text-2xl font-bold mb-4">Buscar Disciplinas</h1>
 
-          <form phx-change="search" class="flex gap-2">
-            <input
+          <.form for={%{}} phx-change="search" class="flex gap-2">
+            <.input
+              phx-debounce="300"
               type="text"
               name="q"
               value={@query}
               placeholder="Filtrar por nome ou código"
               class="input input-bordered w-full"
             />
-          </form>
+          </.form>
         </div>
 
         <div class="card bg-base-100 shadow-xl p-4 overflow-x-auto">
@@ -44,6 +59,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
         <tr class="text-base font-semibold">
           <th>Código</th>
           <th>Nome</th>
+          <th>Instituto</th>
         </tr>
       </thead>
 
@@ -55,13 +71,30 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
         >
           <td class="font-mono">{disciplina.codigo}</td>
           <td>{disciplina.nome}</td>
+          <td>{disciplina.instituto}</td>
         </tr>
       </tbody>
     </table>
     """
   end
 
-  def handle_event("search", %{"q" => q}, socket) do
+  def handle_event("search", %{"q" => ""}, socket) do
+    socket =
+      socket
+      |> assign(query: "")
+      |> push_patch(to: ~p"/disciplinas")
+
+    {:noreply, socket}
+  end
+
+  def handle_event("search", %{"q" => q}, socket) when not is_nil(q) do
+    q = String.trim(q) |> String.downcase()
+
+    socket =
+      socket
+      |> assign(query: q)
+      |> push_patch(to: ~p"/disciplinas?q=#{q}")
+
     {:noreply, socket}
   end
 end
