@@ -7,17 +7,17 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     {:ok, professor} = Avaliacoes.get_professor_by_id(professor_id)
     disciplina = Avaliacoes.get_disciplina_by_code(codigo)
 
-    avaliacoes = Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.id, professor.id)
+    avaliacoes =
+      Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.id, professor.id)
 
     socket =
       socket
       |> assign(:professor, professor)
       |> assign(:disciplina, disciplina)
       |> assign(:avaliacoes, avaliacoes)
+      |> assign(:quantidade_avaliacoes, length(avaliacoes))
       |> assign_nota_media(avaliacoes)
       |> assign(:codigo, codigo)
-      # bad :(
-      |> assign(:quantidade_avaliacoes, length(avaliacoes))
 
     {:ok, socket}
   end
@@ -25,32 +25,55 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
   def render(assigns) do
     ~H"""
     <Layouts.app {assigns}>
-      <h1>Avaliação de professor</h1>
+      <div class="flex flex-col gap-6">
+        <div class="card bg-base-100 shadow-xl p-6">
+          <h1 class="text-3xl font-bold mb-4">Avaliação do Professor</h1>
 
-      <div class="stats shadow">
-        <div class="stat">
-          <div class="stat-title">Nota média</div>
-          <div class="stat-value">{@nota_media}</div>
+          <p class="text-lg mb-2">
+            <span class="font-semibold">{@disciplina.nome}</span>
+            <span class="badge badge-outline ml-2">{@disciplina.codigo}</span>
+          </p>
+
+          <div class="stats  w-full bg-base-200">
+            <div class="stat">
+              <div class="stat-title">Nota média</div>
+              <div class="stat-value">{@nota_media}</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">Avaliações recebidas</div>
+              <div class="stat-value">{@quantidade_avaliacoes}</div>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <button
+              class="btn btn-primary"
+              phx-click={
+                JS.navigate(
+                  ~p"/disciplinas/#{@disciplina.codigo}/professores/#{@professor.id}/avaliar"
+                )
+              }
+            >
+              Avaliar
+            </button>
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-xl p-6">
+          <h2 class="text-2xl font-semibold mb-4">Avaliações</h2>
+
+          <.avaliacoes_table
+            avaliacoes={@avaliacoes}
+            professor={@professor}
+            disciplina_code={@codigo}
+          />
         </div>
       </div>
-      <div class="stats shadow">
-        <div class="stat">
-          <div class="stat-title">Quantas vezes avaliado</div>
-          <div class="stat-value">{@quantidade_avaliacoes}</div>
-        </div>
-      </div>
-      <p>{@disciplina.nome} ({@disciplina.codigo})</p>
-      <.button phx-click={
-        JS.navigate(~p"/disciplinas/#{@disciplina.codigo}/professores/#{@professor.id}/avaliar")
-      }>
-        avaliar
-      </.button>
-      <.avaliacoes_table avaliacoes={@avaliacoes} professor={@professor} disciplina_code={@codigo} />
     </Layouts.app>
     """
   end
 
-  # baaaaaaaaaaaaaaad
   defp assign_nota_media(socket, avaliacoes) do
     nota_media =
       case avaliacoes do
@@ -65,6 +88,10 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     assign(socket, :nota_media, nota_media)
   end
 
+  attr :avaliacoes, :list, required: true
+  attr :professor, :map, required: true
+  attr :disciplina_code, :string, required: true
+
   defp avaliacoes_table(assigns) do
     ~H"""
     <div class="overflow-x-auto w-full">
@@ -75,6 +102,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
             <th>Nota</th>
           </tr>
         </thead>
+
         <tbody>
           <tr
             :for={avaliacao <- @avaliacoes}
@@ -83,7 +111,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
                 "/disciplinas/#{@disciplina_code}/professores/#{@professor.id}/avaliacoes/#{avaliacao.id}"
               )
             }
-            class="hover:cursor-pointer hover:bg-base-200"
+            class="hover:bg-base-200 hover:cursor-pointer"
           >
             <td>{avaliacao.comentario}</td>
             <td>{avaliacao.nota}</td>

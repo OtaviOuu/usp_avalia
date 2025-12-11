@@ -10,22 +10,34 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao.Show do
       ) do
     avaliacao = Avaliacoes.get_avaliacao_by_id(avaliacao_id, load: [:author])
 
-    socket =
-      socket
-      |> assign(:avaliacao, avaliacao)
-
-    {:ok, socket}
+    {:ok, assign(socket, :avaliacao, avaliacao)}
   end
 
   def render(assigns) do
     ~H"""
     <Layouts.app {assigns}>
-      <h1>Detalhes da Avaliação</h1>
-      <p>Aqui estarão os detalhes da avaliação selecionada.</p>
+      <div class="flex flex-col gap-8">
+        <div class="card bg-base-100 shadow-xl p-6">
+          <h1 class="text-3xl font-bold mb-4">Detalhes da Avaliação</h1>
 
-      <h1>{@avaliacao.nota}</h1>
-      <h1>{@avaliacao.comentario}</h1>
-      <p>{@avaliacao.author.email}</p>
+          <div class="flex flex-col text-lg gap-2">
+            <div>
+              <span class="font-semibold">Nota:</span>
+              <span class="badge badge-primary text-base ml-2">{@avaliacao.nota}</span>
+            </div>
+
+            <div>
+              <span class="font-semibold">Comentário:</span>
+              <p class="mt-1">{@avaliacao.comentario}</p>
+            </div>
+
+            <div>
+              <span class="font-semibold">Autor:</span>
+              <p class="mt-1">{@avaliacao.author.email}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </Layouts.app>
     """
   end

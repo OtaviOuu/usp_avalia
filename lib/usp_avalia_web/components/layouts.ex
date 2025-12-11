@@ -51,7 +51,7 @@ defmodule UspAvaliaWeb.Layouts do
           </ul>
         </div>
         <div>
-          <.link navigate="/perfils/verificar" class="btn btn-ghost underline">
+          <.link navigate="/perfis/verificar" class="btn btn-ghost underline">
             Verificar Perfil
           </.link>
         </div>

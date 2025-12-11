@@ -17,24 +17,44 @@ defmodule UspAvaliaWeb.DisciplinaLive.Show do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <h1>Disciplina: <b>{@disciplina.nome}</b></h1>
-      <h1>Professores de <b>{@disciplina.codigo}</b></h1>
-      <div>
-        Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui
-      </div>
+      <div class="flex flex-col gap-8">
+        <div class="card bg-base-100 shadow-xl p-6">
+          <h1 class="text-3xl font-bold mb-3">
+            Disciplina: {@disciplina.nome}
+          </h1>
 
-      <h1>Professores que dão essa disciplina:</h1>
-      <div class="mx-auto">
-        <.professores_table professores={@professores} codigo={@disciplina.codigo} />
+          <div class="text-lg mb-4">
+            <span class="badge badge-outline text-base">{@disciplina.codigo}</span>
+          </div>
+
+          <div class="prose max-w-none">
+            Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui
+            Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui
+            Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui
+            Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui
+            Detalhes da disciplina aqui Detalhes da disciplina aqui Detalhes da disciplina aqui
+          </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-xl p-6">
+          <h2 class="text-2xl font-semibold mb-4">
+            Professores que ministram {@disciplina.codigo}
+          </h2>
+
+          <.professores_table professores={@professores} codigo={@disciplina.codigo} />
+        </div>
       </div>
     </Layouts.app>
     """
   end
 
+  attr :professores, :list, required: true
+  attr :codigo, :string, required: true
+
   def professores_table(assigns) do
     ~H"""
     <div class="overflow-x-auto w-full">
-      <table class="table">
+      <table class="table table-zebra">
         <thead>
           <tr>
             <th>Nome</th>
@@ -42,11 +62,12 @@ defmodule UspAvaliaWeb.DisciplinaLive.Show do
             <th>Salário</th>
           </tr>
         </thead>
+
         <tbody>
           <tr
             :for={professor <- @professores}
             phx-click={JS.navigate(~p"/disciplinas/#{@codigo}/professores/#{professor.id}")}
-            class="hover:cursor-pointer hover:bg-base-200"
+            class="hover:bg-base-200 hover:cursor-pointer"
           >
             <td>{professor.nome}</td>
             <td>{professor.numero_disciplinas}</td>

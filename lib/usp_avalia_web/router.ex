@@ -74,7 +74,7 @@ defmodule UspAvaliaWeb.Router do
     end
   end
 
-  scope "/perfils", UspAvaliaWeb do
+  scope "/perfis", UspAvaliaWeb do
     pipe_through [:browser]
 
     live_session :profiles,
