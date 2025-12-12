@@ -304,9 +304,20 @@ defmodule UspAvalia.Accounts do
   This token cannot be recovered from the database.
   """
   def create_user_api_token(user) do
-    {encoded_token, user_token} = UserToken.build_email_token(user, "api-token")
-    Repo.insert!(user_token)
-    encoded_token
+    user_id = user.id
+    key = "create_api_token:#{user_id}"
+    scale = :timer.minutes(30)
+    limit = 1
+
+    case UspAvalia.RateLimit.hit(key, scale, limit) do
+      {:allow, _current_count} ->
+        {encoded_token, user_token} = UserToken.build_email_token(user, "api-token")
+        Repo.insert!(user_token)
+        {:ok, encoded_token}
+
+      {:deny, ms_until_next_window} ->
+        {:error, ms_until_next_window}
+    end
   end
 
   @doc """

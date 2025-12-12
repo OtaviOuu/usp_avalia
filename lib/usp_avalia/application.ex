@@ -5,6 +5,8 @@ defmodule UspAvalia.Application do
 
   use Application
 
+  alias UspAvalia.RateLimit
+
   @impl true
   def start(_type, _args) do
     children = [
@@ -15,7 +17,8 @@ defmodule UspAvalia.Application do
       # Start a worker by calling: UspAvalia.Worker.start_link(arg)
       # {UspAvalia.Worker, arg},
       # Start to serve requests, typically the last entry
-      UspAvaliaWeb.Endpoint
+      UspAvaliaWeb.Endpoint,
+      RateLimit
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

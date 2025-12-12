@@ -16,7 +16,8 @@ defmodule UspAvaliaWeb.DisciplinasJSON do
   defp data(%Disciplina{} = disciplina) do
     %{
       nome: disciplina.nome,
-      instituto: disciplina.instituto
+      instituto: disciplina.instituto,
+      codigo: disciplina.codigo
     }
   end
 end
