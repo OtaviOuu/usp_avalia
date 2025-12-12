@@ -1,9 +1,11 @@
 defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
+  alias Phoenix.LiveView
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Avaliacoes
 
   on_mount {UspAvaliaWeb.UserAuth, :require_email_usp}
+  on_mount {UspAvaliaWeb.UserAuth, :require_no_open_pedido_validacao}
 
   def mount(_params, _session, socket) do
     scope = socket.assigns.current_scope

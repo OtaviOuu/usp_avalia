@@ -264,6 +264,27 @@ defmodule UspAvaliaWeb.UserAuth do
     end
   end
 
+  def on_mount(:require_no_open_pedido_validacao, _params, session, socket) do
+    socket = mount_current_scope(socket, session)
+    scope = socket.assigns.current_scope
+
+    case UspAvalia.Avaliacoes.has_open_pedido_validacao?(scope) do
+      nil ->
+        {:cont, socket}
+
+      validacao ->
+        socket =
+          socket
+          |> Phoenix.LiveView.put_flash(
+            :error,
+            "You already have an open verification request opened in #{validacao.inserted_at}."
+          )
+          |> Phoenix.LiveView.redirect(to: ~p"/disciplinas")
+
+        {:halt, socket}
+    end
+  end
+
   defp mount_current_scope(socket, session) do
     Phoenix.Component.assign_new(socket, :current_scope, fn ->
       {user, _} =
