@@ -26,6 +26,7 @@ defmodule UspAvaliaWeb.Router do
     pipe_through :api
 
     get "/disciplinas", DisciplinasController, :index
+    get "/disciplinas/:code", DisciplinasController, :show
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

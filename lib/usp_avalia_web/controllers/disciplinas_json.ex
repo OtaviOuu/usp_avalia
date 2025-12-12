@@ -7,6 +7,12 @@ defmodule UspAvaliaWeb.DisciplinasJSON do
     }
   end
 
+  def show(%{disciplina: disciplina}) do
+    %{
+      data: data(disciplina)
+    }
+  end
+
   defp data(%Disciplina{} = disciplina) do
     %{
       nome: disciplina.nome,
