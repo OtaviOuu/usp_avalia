@@ -37,7 +37,7 @@ defmodule UspAvalia.Avaliacoes do
     to: UspAvalia.Avaliacoes.UseCases.SearchDisciplinas,
     as: :call
 
-  defdelegate has_open_pedido_validacao?(scope),
-    to: UspAvalia.Avaliacoes.UseCases.HasOpenPedidoValidacao,
+  defdelegate can_open_pedido_verificacao?(scope),
+    to: UspAvalia.Avaliacoes.UseCases.CanOpenPedidoVerificacao,
     as: :call
 end

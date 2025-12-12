@@ -268,16 +268,16 @@ defmodule UspAvaliaWeb.UserAuth do
     socket = mount_current_scope(socket, session)
     scope = socket.assigns.current_scope
 
-    case UspAvalia.Avaliacoes.has_open_pedido_validacao?(scope) do
-      nil ->
+    case UspAvalia.Avaliacoes.can_open_pedido_verificacao?(scope) do
+      {:ok, true} ->
         {:cont, socket}
 
-      validacao ->
+      {:ok, false, pedido} ->
         socket =
           socket
           |> Phoenix.LiveView.put_flash(
             :error,
-            "You already have an open verification request opened in #{validacao.inserted_at}."
+            "You already have an open verification request in: #{pedido.inserted_at |> NaiveDateTime.to_date()}"
           )
           |> Phoenix.LiveView.redirect(to: ~p"/disciplinas")
 
