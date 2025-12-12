@@ -4,6 +4,7 @@ defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
 
   alias UspAvalia.Avaliacoes
 
+  on_mount {UspAvaliaWeb.UserAuth, :require_authenticated}
   on_mount {UspAvaliaWeb.UserAuth, :require_email_usp}
   on_mount {UspAvaliaWeb.UserAuth, :require_no_open_pedido_validacao}
 
