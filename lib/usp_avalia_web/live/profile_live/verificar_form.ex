@@ -1,8 +1,7 @@
 defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
-  alias Phoenix.LiveView
   use UspAvaliaWeb, :live_view
 
-  alias UspAvalia.Avaliacoes
+  alias UspAvalia.ProfilesVerifications
 
   on_mount {UspAvaliaWeb.UserAuth, :require_authenticated}
   on_mount {UspAvaliaWeb.UserAuth, :require_email_usp}
@@ -12,7 +11,8 @@ defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
     scope = socket.assigns.current_scope
 
     create_verification_form =
-      Avaliacoes.change_pedido_validacao(%{}, scope) |> to_form(as: "pedido_verificacao")
+      ProfilesVerifications.change_pedido_validacao(%{}, scope)
+      |> to_form(as: "pedido_verificacao")
 
     socket =
       socket

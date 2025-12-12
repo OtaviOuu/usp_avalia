@@ -1,4 +1,4 @@
-defmodule UspAvalia.ProfilesVerifications.Entities.PedidoVerificacao do
+defmodule UspAvalia.ProfilesVerifications.PedidoVerificacao do
   use Ecto.Schema
   import Ecto.Changeset
   @fields [:numero_usp, :status, :foto_carteirinha, :informacoes_adicionais]

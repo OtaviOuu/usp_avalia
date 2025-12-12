@@ -1,7 +1,6 @@
 defmodule UspAvalia.Avaliacoes do
   alias UspAvalia.Avaliacoes.Repo
   alias UspAvalia.Avaliacoes
-  alias UspAvalia.ProfilesVerifications
 
   defdelegate list_disciplinas, to: Repo.Disciplina, as: :get_all
 
@@ -20,10 +19,6 @@ defmodule UspAvalia.Avaliacoes do
   defdelegate get_professor_by_id(id), to: Repo.Professor, as: :get_by_id
   defdelegate get_disciplina_by_code(code), to: Repo.Disciplina, as: :get_by_code
   defdelegate get_avaliacao_by_id(id, opts \\ []), to: Repo.Avaliacao, as: :get_by_id
-
-  defdelegate change_pedido_validacao(attrs, scope),
-    to: ProfilesVerifications.Entities.PedidoVerificacao,
-    as: :changeset
 
   defdelegate change_avaliacao(attrs, scope),
     to: Avaliacoes.Entities.Avaliacao,

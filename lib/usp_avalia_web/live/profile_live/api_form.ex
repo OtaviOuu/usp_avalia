@@ -1,5 +1,4 @@
 defmodule UspAvaliaWeb.ProfileLive.ApiForm do
-  alias Ecto.Query.API
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Accounts

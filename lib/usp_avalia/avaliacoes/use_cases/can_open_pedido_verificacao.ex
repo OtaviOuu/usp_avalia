@@ -1,11 +1,9 @@
 defmodule UspAvalia.Avaliacoes.UseCases.CanOpenPedidoVerificacao do
   alias UspAvalia.Accounts.Scope
 
-  alias UspAvalia.ProfilesVerifications.Entities.PedidoVerificacao
+  alias UspAvalia.ProfilesVerifications.PedidoVerificacao
   import Ecto.Query, warn: false
   alias UspAvalia.Repo
-
-  @statuses_abertos ~w(pendente rejeitado)
 
   # ruim
 

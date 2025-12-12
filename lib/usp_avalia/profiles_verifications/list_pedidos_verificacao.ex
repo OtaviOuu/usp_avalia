@@ -1,10 +1,9 @@
-defmodule UspAvalia.ProfilesVerifications.UseCases.ListPedidosVerificacao do
-  import Ecto.Query
+defmodule UspAvalia.ProfilesVerifications.ListPedidosVerificacao do
   alias UspAvalia.Repo
   alias UspAvalia.Accounts.Scope
   alias UspAvalia.ProfilesVerifications.Entities.PedidoVerificacao
 
-  def call(%Scope{user: %{is_admin: true}} = scope) do
+  def call(%Scope{user: %{is_admin: true}} = _scope) do
     {:ok, Repo.all(PedidoVerificacao)}
   end
 

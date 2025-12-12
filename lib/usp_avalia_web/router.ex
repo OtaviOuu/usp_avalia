@@ -1,5 +1,4 @@
 defmodule UspAvaliaWeb.Router do
-  alias UspAvaliaWeb.AvaliacoesLive
   use UspAvaliaWeb, :router
 
   import UspAvaliaWeb.UserAuth

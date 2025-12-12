@@ -2,7 +2,6 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.ProfilesVerifications
-  alias UspAvalia.ProfilesVerifications.Entities.PedidoVerificacao
 
   def mount(_params, _session, socket) do
     scope = socket.assigns.current_scope
