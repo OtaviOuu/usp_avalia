@@ -245,6 +245,25 @@ defmodule UspAvaliaWeb.UserAuth do
     end
   end
 
+  def on_mount(:require_email_usp, _params, session, socket) do
+    socket = mount_current_scope(socket, session)
+    user = socket.assigns.current_scope.user
+
+    if (user && user.email =~ ~r/@usp\.br$/i) or user.is_admin do
+      {:cont, socket}
+    else
+      socket =
+        socket
+        |> Phoenix.LiveView.put_flash(
+          :error,
+          "You must have a valid USP email to access this page."
+        )
+        |> Phoenix.LiveView.redirect(to: ~p"/users/log-in")
+
+      {:halt, socket}
+    end
+  end
+
   defp mount_current_scope(socket, session) do
     Phoenix.Component.assign_new(socket, :current_scope, fn ->
       {user, _} =
