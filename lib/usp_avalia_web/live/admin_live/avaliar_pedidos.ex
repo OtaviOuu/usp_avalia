@@ -59,7 +59,12 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
               </td>
 
               <td class="text-center">
-                <button class="btn btn-ghost btn-xs">Details</button>
+                <.button phx-click="approve" phx-value-id={pedido.id} class="btn btn-success btn-xs">
+                  <.icon name="hero-check" />
+                </.button>
+                <.button phx-click="reject" phx-value-id={pedido.id} class="btn btn-error btn-xs">
+                  <.icon name="hero-x-mark" />
+                </.button>
               </td>
             </tr>
           </tbody>
@@ -67,6 +72,38 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
       </div>
     </Layouts.app>
     """
+  end
+
+  def handle_event("approve", %{"id" => id}, socket) do
+    scope = socket.assigns.current_scope
+
+    with pedido <- Enum.find(socket.assigns.pedidos, &(&1.id == id)),
+         {:ok, _updated_pedido} <-
+           ProfilesVerifications.change_pedido_verificacao_status(
+             pedido,
+             :aprovado,
+             scope
+           ) do
+      {:noreply, push_navigate(socket, to: ~p"/admin/avaliar-pedidos")}
+    else
+      _ -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("reject", %{"id" => id}, socket) do
+    scope = socket.assigns.current_scope
+
+    with pedido <- Enum.find(socket.assigns.pedidos, &(&1.id == id)),
+         {:ok, _updated_pedido} <-
+           ProfilesVerifications.change_pedido_verificacao_status(
+             pedido,
+             :rejeitado,
+             scope
+           ) do
+      {:noreply, push_navigate(socket, to: ~p"/admin/avaliar-pedidos")}
+    else
+      _ -> {:noreply, socket}
+    end
   end
 
   # Mapeamento de status para classes DaisyUI

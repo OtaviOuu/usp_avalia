@@ -12,4 +12,8 @@ defmodule UspAvalia.ProfilesVerifications do
   defdelegate change_pedido_validacao(attrs, scope),
     to: ProfilesVerifications.PedidoVerificacao,
     as: :changeset
+
+  defdelegate change_pedido_verificacao_status(pedido_verificacao, new_status, scope),
+    to: ProfilesVerifications.ChangePedidoVerificacaoStatus,
+    as: :call
 end
