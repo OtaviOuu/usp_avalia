@@ -16,7 +16,7 @@ defmodule UspAvalia.Avaliacoes.UseCases.CanOpenPedidoVerificacao do
   def call(%Scope{} = scope) do
     query =
       from pv in PedidoVerificacao,
-        where: pv.user_id == ^scope.user.id and pv.status != "rejeitado"
+        where: pv.user_id == ^scope.user.id and pv.status != :rejeitado
 
     case Repo.one(query) do
       nil -> {:ok, true}

@@ -53,7 +53,7 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
               <td class="text-center">
                 <div class="flex justify-center">
                   <span class={status_class(pedido.status)}>
-                    {String.capitalize(pedido.status)}
+                    {String.capitalize(to_string(pedido.status))}
                   </span>
                 </div>
               </td>
@@ -70,8 +70,8 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
   end
 
   # Mapeamento de status para classes DaisyUI
-  defp status_class("pendente"), do: "badge badge-warning"
-  defp status_class("aprovado"), do: "badge badge-success"
-  defp status_class("rejeitado"), do: "badge badge-error"
+  defp status_class(:pendente), do: "badge badge-warning"
+  defp status_class(:aprovado), do: "badge badge-success"
+  defp status_class(:rejeitado), do: "badge badge-error"
   defp status_class(_), do: "badge"
 end

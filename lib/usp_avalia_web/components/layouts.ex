@@ -55,6 +55,17 @@ defmodule UspAvaliaWeb.Layouts do
             Verificar Perfil
           </.link>
         </div>
+        <ul
+          :if={@current_scope.user}
+          class="menu menu-horizontal px-1 ml-4 space-x-4"
+        >
+          <li>
+            {@current_scope.user.email}
+          </li>
+          <li class="badge badge-info">
+            Verificado: {@current_scope.user.verified}
+          </li>
+        </ul>
       </div>
       <div class="navbar-center">
         <.link navigate="/disciplinas" class="btn btn-ghost text-xl">USP avalia</.link>

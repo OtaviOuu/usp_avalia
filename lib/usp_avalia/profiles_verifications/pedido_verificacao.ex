@@ -2,7 +2,7 @@ defmodule UspAvalia.ProfilesVerifications.PedidoVerificacao do
   use Ecto.Schema
   import Ecto.Changeset
   @fields [:numero_usp, :status, :foto_carteirinha, :informacoes_adicionais]
-  @status_values ["pendente", "aprovado", "rejeitado"]
+  @status_values [:pendente, :aprovado, :rejeitado]
   @primary_key {:id, :binary_id, autogenerate: true}
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -11,7 +11,7 @@ defmodule UspAvalia.ProfilesVerifications.PedidoVerificacao do
     field :foto_carteirinha, :string
     field :informacoes_adicionais, :string
 
-    field :status, :string, default: "pendente"
+    field :status, Ecto.Enum, values: @status_values, default: :pendente
 
     belongs_to :user, UspAvalia.Accounts.User
 
