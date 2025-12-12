@@ -96,6 +96,15 @@ defmodule UspAvaliaWeb.Router do
     end
   end
 
+  scope "/admin", UspAvaliaWeb do
+    pipe_through [:browser]
+
+    live_session :admin,
+      on_mount: [{UspAvaliaWeb.UserAuth, :require_admin}] do
+      live "/avaliar-pedidos", AdminLive.AvaliarPedidos, :index
+    end
+  end
+
   scope "/", UspAvaliaWeb do
     pipe_through [:browser]
 

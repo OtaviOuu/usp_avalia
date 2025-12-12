@@ -104,7 +104,7 @@ defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
 
     IO.inspect(attrs, label: "Attrs with file path")
 
-    case Avaliacoes.create_pedido_validacao(
+    case UspAvalia.ProfilesVerifications.create_pedido_validacao(
            attrs,
            socket.assigns.current_scope
          ) do

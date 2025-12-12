@@ -17,10 +17,6 @@ defmodule UspAvalia.Avaliacoes do
 
   defdelegate create_avaliacao(scope, attrs), to: Avaliacoes.UseCases.CreateAvaliacao, as: :call
 
-  defdelegate create_pedido_validacao(attrs, scope),
-    to: ProfilesVerifications.UseCases.CreatePedidoVerificacao,
-    as: :call
-
   defdelegate get_professor_by_id(id), to: Repo.Professor, as: :get_by_id
   defdelegate get_disciplina_by_code(code), to: Repo.Disciplina, as: :get_by_code
   defdelegate get_avaliacao_by_id(id, opts \\ []), to: Repo.Avaliacao, as: :get_by_id
