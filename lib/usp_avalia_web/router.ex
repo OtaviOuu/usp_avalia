@@ -16,6 +16,7 @@ defmodule UspAvaliaWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_current_scope_for_api_user
   end
 
   scope "/", UspAvaliaWeb do
@@ -81,6 +82,7 @@ defmodule UspAvaliaWeb.Router do
     live_session :profiles,
       on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
       live "/verificar", ProfileLive.VerificarForm, :new
+      live "/api", ProfileLive.ApiForm, :new
     end
   end
 
