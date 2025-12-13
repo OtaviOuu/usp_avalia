@@ -2,6 +2,7 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.ProfilesVerifications
+  alias UspAvalia.ProfilesVerifications.{PedidoVerificacao}
 
   def mount(_params, _session, socket) do
     scope = socket.assigns.current_scope
@@ -12,13 +13,34 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
         {:error, _} -> []
       end
 
-    {:ok, assign(socket, pedidos: pedidos)}
+    socket =
+      socket
+      |> assign(pedidos: pedidos)
+      |> assign(opened_image: nil)
+
+    {:ok, socket}
   end
 
   def render(assigns) do
     ~H"""
     <Layouts.app {assigns}>
       <h1 class="text-2xl font-bold mb-4">Avaliar Pedidos</h1>
+
+      <div
+        :if={@opened_image}
+        id="modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      >
+        <div
+          class="absolute top-4 right-4 text-white text-3xl cursor-pointer"
+          phx-click="close_modal"
+        >
+          &times;
+        </div>
+        <div class="bg-white p-4 rounded shadow-lg max-w-full max-h-full">
+          <img src={@opened_image} class="max-w-full max-h-full" />
+        </div>
+      </div>
 
       <div class="overflow-x-auto">
         <table class="table w-full">
@@ -44,7 +66,12 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
                 </div>
               </td>
 
-              <td class="text-center">
+              <td
+                class="text-center"
+                phx-click="show_carteirinha"
+                phx-value-id={pedido.id}
+                style="cursor: pointer;"
+              >
                 <div class="mask mask-squircle h-12 w-12 mx-auto overflow-hidden">
                   <img src={pedido.foto_carteirinha} class="object-cover h-full w-full" />
                 </div>
@@ -104,6 +131,19 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
     else
       _ -> {:noreply, socket}
     end
+  end
+
+  def handle_event("show_carteirinha", %{"id" => id}, socket) do
+    with %PedidoVerificacao{} = pedido <-
+           Enum.find(socket.assigns.pedidos, &(&1.id == id)) do
+      {:noreply, assign(socket, opened_image: pedido.foto_carteirinha)}
+    else
+      _ -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("close_modal", _params, socket) do
+    {:noreply, assign(socket, opened_image: nil)}
   end
 
   # Mapeamento de status para classes DaisyUI
