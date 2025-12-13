@@ -29,7 +29,7 @@ defmodule UspAvaliaWeb.AdminLive.AvaliarPedidos do
       <div
         :if={@opened_image}
         id="modal"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        class="fixed inset-0 bg-gray-800/90 flex items-center justify-center z-50"
       >
         <div
           class="absolute top-4 right-4 text-white text-3xl cursor-pointer"
