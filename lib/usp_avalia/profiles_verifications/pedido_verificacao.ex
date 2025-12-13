@@ -7,7 +7,6 @@ defmodule UspAvalia.ProfilesVerifications.PedidoVerificacao do
   @fields [:numero_usp, :status, :foto_carteirinha, :informacoes_adicionais]
   @update_fields [:status]
   @status_values [:pendente, :aprovado, :rejeitado]
-  @primary_key {:id, :binary_id, autogenerate: true}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "pedidos_verificacao" do
