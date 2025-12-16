@@ -10,7 +10,8 @@ defmodule UspAvalia.ProfilesVerifications.ChangePedidoVerificacaoStatus do
         %Scope{} = scope
       ) do
     Repo.transact(fn ->
-      update_pedido_and_user_verified_status(pedido_verificacao, status, scope)
+      {:ok, updated_pedido} =
+        update_pedido_and_user_verified_status(pedido_verificacao, status, scope)
     end)
   end
 
