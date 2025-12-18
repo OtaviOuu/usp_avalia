@@ -30,10 +30,11 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
         <div class="card bg-base-100 shadow-xl p-6">
           <h1 class="text-2xl font-bold mb-4">Buscar Disciplinas</h1>
 
-          <.form for={%{}} phx-change="search" class="flex gap-2">
+          <form phx-change="search" class="flex gap-2">
             <div class="relative w-full">
               <.input
-                phx-debounce="300"
+                autocomplete="off"
+                phx-debounce="100"
                 type="text"
                 name="q"
                 value={@query}
@@ -41,7 +42,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
                 class="input input-bordered w-full"
               />
             </div>
-          </.form>
+          </form>
         </div>
 
         <div class="card bg-base-100 shadow-xl p-4 overflow-x-auto">
@@ -56,7 +57,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
 
   def disciplinas_table(assigns) do
     ~H"""
-    <table class="table w-full">
+    <table class="table w-full table-fixed">
       <thead>
         <tr class="text-base font-semibold">
           <th>Código</th>
