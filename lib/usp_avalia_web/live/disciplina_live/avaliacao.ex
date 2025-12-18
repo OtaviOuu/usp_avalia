@@ -47,16 +47,22 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
           </div>
 
           <div class="mt-5">
-            <button
-              class="btn btn-primary"
-              phx-click={
-                JS.navigate(
-                  ~p"/disciplinas/#{@disciplina.codigo}/professores/#{@professor.id}/avaliar"
-                )
-              }
-            >
-              Avaliar
-            </button>
+            <%= if Avaliacoes.can_create_avaliacao?(@current_scope) do %>
+              <button
+                class="btn btn-primary"
+                phx-click={
+                  JS.navigate(
+                    ~p"/disciplinas/#{@disciplina.codigo}/professores/#{@professor.id}/avaliar"
+                  )
+                }
+              >
+                Avaliar
+              </button>
+            <% else %>
+              <p class="text-red-500">
+                Você precisa ter um perfil verificado para avaliar este professor.
+              </p>
+            <% end %>
           </div>
         </div>
 

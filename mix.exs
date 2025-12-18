@@ -68,7 +68,8 @@ defmodule UspAvalia.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:hammer, "~> 7.0.0"},
-      {:contex, "~> 0.5"}
+      {:contex, "~> 0.5"},
+      {:bodyguard, "~> 2.4.3"}
     ]
   end
 

@@ -1,4 +1,9 @@
 defmodule UspAvalia.Avaliacoes do
+  @behaviour Bodyguard.Policy
+
+  def authorize(:create_avaliacao, %{verified: true} = _user, _), do: :ok
+  def authorize(:create_avaliacao, _, _), do: false
+
   alias UspAvalia.Avaliacoes.Repo
   alias UspAvalia.Avaliacoes
 
@@ -14,7 +19,18 @@ defmodule UspAvalia.Avaliacoes do
     to: Repo.Avaliacao,
     as: :list_by_code_and_professor
 
-  defdelegate create_avaliacao(scope, attrs), to: Avaliacoes.UseCases.CreateAvaliacao, as: :call
+  def create_avaliacao(scope, attrs) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_avaliacao, scope) do
+      Avaliacoes.UseCases.CreateAvaliacao.call(scope, attrs)
+    end
+  end
+
+  def can_create_avaliacao?(scope) do
+    case Bodyguard.permit(__MODULE__, :create_avaliacao, scope) do
+      :ok -> true
+      _ -> false
+    end
+  end
 
   defdelegate get_professor_by_id(id), to: Repo.Professor, as: :get_by_id
   defdelegate get_disciplina_by_code(code), to: Repo.Disciplina, as: :get_by_code
