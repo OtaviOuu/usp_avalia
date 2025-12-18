@@ -20,6 +20,8 @@ defmodule UspAvaliaWeb.Router do
 
   scope "/", UspAvaliaWeb do
     pipe_through :browser
+
+    get "/", HomeController, :redirect_to_disciplinas
   end
 
   scope "/api", UspAvaliaWeb do
