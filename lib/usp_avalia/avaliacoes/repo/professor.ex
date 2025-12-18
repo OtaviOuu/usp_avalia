@@ -4,14 +4,9 @@ defmodule UspAvalia.Avaliacoes.Repo.Professor do
   import Ecto.Query
 
   def get_by_id(id) do
-    case Repo.get(Professor, id) do
-      nil ->
-        {:error, :not_found}
-
-      professor ->
-        professor = Repo.preload(professor, :disciplinas)
-        {:ok, professor}
-    end
+    Professor
+    |> Repo.get(id)
+    |> Repo.preload(:disciplinas)
   end
 
   def get_all_by_disciplina_codigo(codigo) do

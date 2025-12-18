@@ -4,7 +4,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
   alias UspAvalia.Avaliacoes
 
   def mount(%{"codigo" => codigo, "professor_id" => professor_id}, _session, socket) do
-    {:ok, professor} = Avaliacoes.get_professor_by_id(professor_id)
+    professor = Avaliacoes.get_professor_by_id(professor_id)
     disciplina = Avaliacoes.get_disciplina_by_code(codigo)
 
     socket =
