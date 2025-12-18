@@ -21,51 +21,17 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     ~H"""
     <Layouts.app {assigns}>
       <div class="flex flex-col gap-6">
-        <div class="card bg-base-100 shadow-xl p-6">
-          <h1 class="text-3xl font-bold mb-4">Avaliação do Professor</h1>
-
-          <p class="text-lg mb-2">
-            <span class="font-semibold">{@disciplina.nome}</span>
-            <span class="badge badge-outline ml-2">{@disciplina.codigo}</span>
-          </p>
-
-          <div class="stats  w-full bg-base-200">
-            <div class="stat">
-              <div class="stat-title">Nota média</div>
-              <div class="stat-value">{@nota_media}</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-title">Avaliações recebidas</div>
-              <div class="stat-value">{@quantidade_avaliacoes}</div>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <%= if Avaliacoes.can_create_avaliacao?(@current_scope) do %>
-              <button
-                class="btn btn-primary"
-                phx-click={
-                  JS.navigate(
-                    ~p"/disciplinas/#{@disciplina.codigo}/professores/#{@professor.id}/avaliar"
-                  )
-                }
-              >
-                Avaliar
-              </button>
-            <% else %>
-              <p class="text-red-500">
-                Você precisa ter um perfil verificado para avaliar este professor.
-              </p>
-            <% end %>
-          </div>
-        </div>
-
+        <.card_professor_data
+          current_scope={@current_scope}
+          media={@avaliacoes_data.media_geral}
+          quantidade_avaliacoes={@quantidade_avaliacoes}
+          disciplina={@disciplina}
+          professor={@professor}
+        />
         <div class="card bg-base-100 shadow-xl p-6">
           <h2 class="text-2xl font-semibold mb-4">Avaliações</h2>
-
           <.avaliacoes_table
-            avaliacoes={@avaliacoes}
+            avaliacoes_data={@avaliacoes_data}
             professor={@professor}
             disciplina_code={@codigo}
           />
@@ -75,7 +41,46 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     """
   end
 
-  attr :avaliacoes, :list, required: true
+  attr :current_scope, :map, required: true
+  attr :media, :float, required: true
+  attr :quantidade_avaliacoes, :integer, required: true
+  attr :disciplina, :map, required: true
+  attr :professor, :map, required: true
+
+  defp card_professor_data(assigns) do
+    ~H"""
+    <div class="card bg-base-100 shadow-xl p-6">
+      <h1 class="text-3xl font-bold mb-4">Avaliação do Professor</h1>
+
+      <p class="text-lg mb-2">
+        <span class="font-semibold">{@disciplina.nome}</span>
+        <span class="badge badge-outline ml-2">{@disciplina.codigo}</span>
+      </p>
+
+      <div class="stats  w-full bg-base-200">
+        <div class="stat">
+          <div class="stat-title">Nota média</div>
+          <div class="stat-value">{@media}</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-title">Avaliações recebidas</div>
+          <div class="stat-value">{@quantidade_avaliacoes}</div>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <.btn_avalliar
+          current_scope={@current_scope}
+          disciplina={@disciplina}
+          professor={@professor}
+        />
+      </div>
+    </div>
+    """
+  end
+
+  attr :avaliacoes_data, :list, required: true
   attr :professor, :map, required: true
   attr :disciplina_code, :string, required: true
 
@@ -92,7 +97,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
 
         <tbody>
           <tr
-            :for={avaliacao <- @avaliacoes}
+            :for={avaliacao <- @avaliacoes_data.avaliacoes}
             phx-click={
               JS.navigate(
                 "/disciplinas/#{@disciplina_code}/professores/#{@professor.id}/avaliacoes/#{avaliacao.id}"
@@ -109,13 +114,35 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     """
   end
 
+  attr :current_scope, :map, required: true
+  attr :disciplina, :map, required: true
+  attr :professor, :map, required: true
+
+  defp btn_avalliar(assigns) do
+    ~H"""
+    <%= if Avaliacoes.can_create_avaliacao?(@current_scope) do %>
+      <button
+        class="btn btn-primary"
+        phx-click={
+          JS.navigate(~p"/disciplinas/#{@disciplina.codigo}/professores/#{@professor.id}/avaliar")
+        }
+      >
+        Avaliar
+      </button>
+    <% else %>
+      <p class="text-red-500">
+        Você precisa ter um perfil verificado para avaliar este professor.
+      </p>
+    <% end %>
+    """
+  end
+
   defp assign_avaliacoes(%{assigns: %{professor: professor, disciplina: disciplina}} = socket) do
-    %{avaliacoes: avaliacoes, media_geral: nota_media} =
+    avaliacoes_data =
       Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.id, professor.id)
 
     socket
-    |> assign(:avaliacoes, avaliacoes)
-    |> assign(:nota_media, nota_media)
-    |> assign(:quantidade_avaliacoes, length(avaliacoes))
+    |> assign(:avaliacoes_data, avaliacoes_data)
+    |> assign(:quantidade_avaliacoes, length(avaliacoes_data.avaliacoes))
   end
 end
