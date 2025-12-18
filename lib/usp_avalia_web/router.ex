@@ -18,12 +18,6 @@ defmodule UspAvaliaWeb.Router do
     plug :fetch_current_scope_for_api_user
   end
 
-  scope "/", UspAvaliaWeb do
-    pipe_through :browser
-
-    get "/", HomeController, :redirect_to_disciplinas
-  end
-
   scope "/api", UspAvaliaWeb do
     pipe_through :api
 
@@ -48,75 +42,71 @@ defmodule UspAvaliaWeb.Router do
     end
   end
 
-  ## Authentication routes
-
-  scope "/", UspAvaliaWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    live_session :require_authenticated_user,
-      on_mount: [{UspAvaliaWeb.UserAuth, :require_authenticated}] do
-      live "/users/settings", UserLive.Settings, :edit
-      live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
-    end
-
-    post "/users/update-password", UserSessionController, :update_password
-  end
-
-  scope "/disciplinas", UspAvaliaWeb do
-    pipe_through [:browser]
-
-    live_session :disciplinas,
-      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
-      live "/", DisciplinaLive.Index, :index
-      live "/:codigo", DisciplinaLive.Show, :show
-      live "/:codigo/professores/:professor_id", DisciplinaLive.Avaliacao, :show
-      live "/:codigo/professores/:professor_id/avaliar", DisciplinaLive.Avaliar
-
-      live "/:codigo/professores/:professor_id/avaliacoes/:avaliacao_id",
-           DisciplinaLive.Avaliacao.Show
-    end
-  end
-
-  scope "/perfis", UspAvaliaWeb do
-    pipe_through [:browser]
-
-    live_session :profiles,
-      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
-      live "/verificar", ProfileLive.VerificarForm, :new
-      live "/api", ProfileLive.ApiForm, :new
-    end
-  end
-
-  scope "/professores", UspAvaliaWeb do
-    pipe_through [:browser]
-
-    live_session :professores,
-      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
-      live "/", ProfessorLive.Index, :index
-      live "/:id", ProfessorLive.Show, :show
-    end
-  end
-
-  scope "/admin", UspAvaliaWeb do
-    pipe_through [:browser]
-
-    live_session :admin,
-      on_mount: [{UspAvaliaWeb.UserAuth, :require_admin}] do
-      live "/avaliar-pedidos", AdminLive.AvaliarPedidos, :index
-    end
-  end
-
   scope "/", UspAvaliaWeb do
     pipe_through [:browser]
 
-    live_session :current_user,
-      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
-      live "/users/register", UserLive.Registration, :new
-      live "/users/log-in", UserLive.Login, :new
-      live "/users/log-in/:token", UserLive.Confirmation, :new
+    get "/", HomeController, :redirect_to_disciplinas
+
+    scope "/professores" do
+      live_session :professores,
+        on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+        live "/", ProfessorLive.Index, :index
+        live "/:id", ProfessorLive.Show, :show
+      end
     end
 
-    post "/users/log-in", UserSessionController, :create
-    delete "/users/log-out", UserSessionController, :delete
+    scope "/perfis" do
+      live_session :profiles,
+        on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+        live "/verificar", ProfileLive.VerificarForm, :new
+        live "/api", ProfileLive.ApiForm, :new
+      end
+    end
+
+    scope "/disciplinas" do
+      live_session :disciplinas,
+        on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+        live "/", DisciplinaLive.Index, :index
+        live "/:codigo", DisciplinaLive.Show, :show
+        live "/:codigo/professores/:professor_id", DisciplinaLive.Avaliacao, :show
+        live "/:codigo/professores/:professor_id/avaliar", DisciplinaLive.Avaliar
+
+        live "/:codigo/professores/:professor_id/avaliacoes/:avaliacao_id",
+             DisciplinaLive.Avaliacao.Show
+      end
+    end
+
+    scope "/admin" do
+      live_session :admin,
+        on_mount: [{UspAvaliaWeb.UserAuth, :require_admin}] do
+        live "/avaliar-pedidos", AdminLive.AvaliarPedidos, :index
+      end
+    end
+
+    scope "/users" do
+      scope "/" do
+        pipe_through [:require_authenticated_user]
+
+        live_session :require_authenticated_user,
+          on_mount: [{UspAvaliaWeb.UserAuth, :require_authenticated}] do
+          live "/settings", UserLive.Settings, :edit
+          live "/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+        end
+
+        post "/update-password", UserSessionController, :update_password
+      end
+
+      scope "/" do
+        live_session :current_user,
+          on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+          live "/register", UserLive.Registration, :new
+          live "/log-in", UserLive.Login, :new
+          live "/log-in/:token", UserLive.Confirmation, :new
+        end
+
+        post "/log-in", UserSessionController, :create
+        delete "/log-out", UserSessionController, :delete
+      end
+    end
   end
 end
