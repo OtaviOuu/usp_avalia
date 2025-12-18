@@ -7,17 +7,12 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     {:ok, professor} = Avaliacoes.get_professor_by_id(professor_id)
     disciplina = Avaliacoes.get_disciplina_by_code(codigo)
 
-    avaliacoes =
-      Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.id, professor.id)
-
     socket =
       socket
       |> assign(:professor, professor)
       |> assign(:disciplina, disciplina)
-      |> assign(:avaliacoes, avaliacoes)
-      |> assign(:quantidade_avaliacoes, length(avaliacoes))
-      |> assign_nota_media(avaliacoes)
       |> assign(:codigo, codigo)
+      |> assign_avaliacoes
 
     {:ok, socket}
   end
@@ -80,20 +75,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     """
   end
 
-  defp assign_nota_media(socket, avaliacoes) do
-    nota_media =
-      case avaliacoes do
-        [] ->
-          0.0
-
-        _ ->
-          total = Enum.reduce(avaliacoes, 0, fn a, acc -> acc + a.nota end)
-          total / length(avaliacoes)
-      end
-
-    assign(socket, :nota_media, nota_media)
-  end
-
   attr :avaliacoes, :list, required: true
   attr :professor, :map, required: true
   attr :disciplina_code, :string, required: true
@@ -126,5 +107,15 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       </table>
     </div>
     """
+  end
+
+  defp assign_avaliacoes(%{assigns: %{professor: professor, disciplina: disciplina}} = socket) do
+    %{avaliacoes: avaliacoes, media_geral: nota_media} =
+      Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.id, professor.id)
+
+    socket
+    |> assign(:avaliacoes, avaliacoes)
+    |> assign(:nota_media, nota_media)
+    |> assign(:quantidade_avaliacoes, length(avaliacoes))
   end
 end
