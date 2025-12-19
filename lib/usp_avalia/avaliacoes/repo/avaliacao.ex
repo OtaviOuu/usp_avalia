@@ -25,7 +25,7 @@ defmodule UspAvalia.Avaliacoes.Repo.Avaliacao do
     media_geral =
       Repo.one(
         from a in base_query,
-          select: avg(a.nota)
+          select: avg((a.nota_avaliacao + a.nota_aula) / 2)
       )
 
     %{

@@ -70,7 +70,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       <div class="stats  w-full bg-base-200">
         <div class="stat">
           <div class="stat-title">Nota média</div>
-          <div class="stat-value">{@media}</div>
+          <div class="stat-value">{@media |> Decimal.round(2)}</div>
         </div>
 
         <div class="stat">
@@ -115,8 +115,8 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
             }
             class="hover:bg-base-200 hover:cursor-pointer"
           >
-            <td>{avaliacao.comentario}</td>
-            <td>{avaliacao.nota}</td>
+            <td>{avaliacao.comentario_avaliacao}</td>
+            <td>{avaliacao.nota_avaliacao}</td>
           </tr>
         </tbody>
       </table>
@@ -180,9 +180,13 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     |> handle_charts_data(avaliacoes_data)
   end
 
+  # botar na db kk
   defp handle_charts_data(socket, avaliacoes_data) do
-    positivos = Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota >= 5 end)
-    negativos = Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota < 5 end)
+    positivos =
+      Enum.count(avaliacoes_data.avaliacoes, fn a -> (a.nota_avaliacao + a.nota_aula) / 2 >= 5 end)
+
+    negativos =
+      Enum.count(avaliacoes_data.avaliacoes, fn a -> (a.nota_avaliacao + a.nota_aula) / 2 < 5 end)
 
     socket
     |> assign(:quantidade_positivos, positivos)

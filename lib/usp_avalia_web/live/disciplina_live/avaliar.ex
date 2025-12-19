@@ -27,20 +27,51 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <h1>Disciplina: {@disciplina.codigo}</h1>
-      <h1>Professor: {@professor.nome}</h1>
-      <.form for={@form_avaliacao} phx-submit="save">
-        <.input
-          field={@form_avaliacao[:nota]}
-          type="number"
-          min="0"
-          max="10"
-          step="1"
-          label="Nota"
-        />
-        <.input field={@form_avaliacao[:comentario]} type="textarea" label="Comentário" rows="10" />
-        <.button type="submit">Enviar Avaliação</.button>
-      </.form>
+      <div class="mt-6 w-full mx-auto max-w-lg bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-xl font-semibold mb-4 text-center">
+          {@disciplina.codigo} - {@professor.nome}
+        </h1>
+        <.form for={@form_avaliacao} phx-submit="save">
+          <.input
+            type="number"
+            label="Nota da Avaliação"
+            min="0"
+            max="10"
+            field={@form_avaliacao[:nota_avaliacao]}
+            required
+          />
+          <.input
+            type="textarea"
+            label="Comentário da Avaliação"
+            name="comentario_avaliacao"
+            field={@form_avaliacao[:comentario_avaliacao]}
+          />
+          <.input
+            type="number"
+            label="Nota da Aula"
+            min="0"
+            max="10"
+            field={@form_avaliacao[:nota_aula]}
+            required
+          />
+          <.input
+            type="textarea"
+            label="Comentário da Aula"
+            field={@form_avaliacao[:comentario_aula]}
+          />
+          <.input
+            type="checkbox"
+            label="Cobra Presença?"
+            field={@form_avaliacao[:cobra_presenca?]}
+          />
+          <.input
+            type="textarea"
+            label="Comentário sobre Cobrança de Presença"
+            field={@form_avaliacao[:comentario_cobra_presenca]}
+          />
+          <.button type="submit">Enviar Avaliação</.button>
+        </.form>
+      </div>
     </Layouts.app>
     """
   end

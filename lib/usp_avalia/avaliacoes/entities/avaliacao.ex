@@ -3,12 +3,21 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
   import Ecto.Changeset
   alias UspAvalia.Avaliacoes.Entities.{Professor, Disciplina}
 
-  @fields [:nota, :comentario, :professor_id, :disciplina_id]
+  @required_fields [:nota_avaliacao, :nota_aula, :cobra_presenca?, :professor_id, :disciplina_id]
+  @optional_fields [:comentario_avaliacao, :comentario_aula, :comentario_cobra_presenca]
+
+  @all_fields @optional_fields ++ @required_fields
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "avaliacoes" do
-    field :nota, :integer
-    field :comentario, :string
+    field :nota_avaliacao, :integer
+    field :comentario_avaliacao, :string
+
+    field :nota_aula, :integer
+    field :comentario_aula, :string
+
+    field :cobra_presenca?, :boolean
+    field :comentario_cobra_presenca, :string
 
     belongs_to :professor, Professor, type: :binary_id
     belongs_to :disciplina, Disciplina, type: :binary_id
@@ -20,25 +29,30 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
 
   def changeset(attrs, scope) do
     %__MODULE__{}
-    |> cast(attrs, @fields)
-    |> validate(scope)
-    |> relate(scope)
-  end
-
-  defp validate(changeset, scope) do
-    changeset
-    |> validate_required(@fields)
+    |> cast(attrs, @all_fields)
+    |> validate_required(@required_fields)
     |> validate_is_email_usp(scope)
-    |> validate_inclusion(:nota, 0..10)
-    |> validate_length(:comentario,
-      min: 2,
-      max: 255
-    )
+    |> validate_comentarios
+    |> validate_notas
+    |> relate(scope)
   end
 
   defp relate(changeset, scope) do
     changeset
     |> put_assoc(:author, scope.user)
+  end
+
+  defp validate_notas(changeset) do
+    changeset
+    |> validate_number(:nota_avaliacao, greater_than_or_equal_to: 0, less_than_or_equal_to: 10)
+    |> validate_number(:nota_aula, greater_than_or_equal_to: 0, less_than_or_equal_to: 10)
+  end
+
+  defp validate_comentarios(changeset) do
+    changeset
+    |> validate_length(:comentario_avaliacao, min: 10, max: 500)
+    |> validate_length(:comentario_aula, min: 10, max: 500)
+    |> validate_length(:comentario_cobra_presenca, min: 10, max: 500)
   end
 
   defp validate_is_email_usp(changeset, %{user: %{email: email} = _scope}) do
