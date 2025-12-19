@@ -1,4 +1,6 @@
 defmodule UspAvaliaWeb.Layouts do
+  alias UspAvalia.ProfilesVerifications
+
   @moduledoc """
   This module holds layouts and related functionality
   used by your application.
@@ -50,15 +52,23 @@ defmodule UspAvaliaWeb.Layouts do
             <li><a>About</a></li>
           </ul>
         </div>
-        <div>
-          <.link navigate="/perfis/verificar" class="btn btn-ghost underline">
-            Verificar Perfil
-          </.link>
-        </div>
         <ul
           :if={@current_scope.user}
-          class="menu menu-horizontal px-1 ml-4 space-x-4"
+          class="menu menu-horizontal px-1 ml-4 space-x-4 items-center"
         >
+          <li :if={ProfilesVerifications.can_create_pedido_validacao?(@current_scope)}>
+            <.link navigate="/perfis/verificar" class="btn btn-ghost underline">
+              Verificar Perfil
+            </.link>
+          </li>
+          <li :if={@current_scope.user.is_admin}>
+            <.link
+              navigate={~p"/admin/avaliar-pedidos"}
+              class="underline"
+            >
+              Admin
+            </.link>
+          </li>
           <li>
             {@current_scope.user.email}
           </li>

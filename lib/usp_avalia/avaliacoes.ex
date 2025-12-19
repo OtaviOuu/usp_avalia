@@ -1,6 +1,7 @@
 defmodule UspAvalia.Avaliacoes do
   @behaviour Bodyguard.Policy
 
+  # auth podre. Melhor manter um modulo de auth para cada dominio e apneas embrulhar a chamada
   def authorize(:create_avaliacao, %{verified: true} = _user, _), do: :ok
   def authorize(:create_avaliacao, _, _), do: false
 

@@ -1,9 +1,23 @@
 defmodule UspAvalia.ProfilesVerifications do
+  @behaviour Bodyguard.Policy
+
+  def authorize(:create_pedido_validacao, %{user: %{verified: false}}, _), do: :ok
+  def authorize(:create_pedido_validacao, _, _), do: :error
+
   alias UspAvalia.ProfilesVerifications
 
-  defdelegate create_pedido_validacao(attrs, scope),
-    to: ProfilesVerifications.CreatePedidoVerificacao,
-    as: :call
+  def create_pedido_validacao(attrs, scope) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_pedido_validacao, scope) do
+      ProfilesVerifications.CreatePedidoVerificacao.call(attrs, scope)
+    end
+  end
+
+  def can_create_pedido_validacao?(scope) do
+    case Bodyguard.permit(__MODULE__, :create_pedido_validacao, scope) do
+      :ok -> true
+      _ -> false
+    end
+  end
 
   defdelegate list_pedidos_verificacao(scope),
     to: ProfilesVerifications.ListPedidosVerificacao,

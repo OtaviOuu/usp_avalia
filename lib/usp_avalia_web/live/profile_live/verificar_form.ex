@@ -3,9 +3,7 @@ defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
 
   alias UspAvalia.ProfilesVerifications
 
-  on_mount {UspAvaliaWeb.UserAuth, :require_authenticated}
-  on_mount {UspAvaliaWeb.UserAuth, :require_email_usp}
-  on_mount {UspAvaliaWeb.UserAuth, :require_no_open_pedido_validacao}
+  on_mount {UspAvaliaWeb.VerificacoesAuth, :require_can_open_pedido_verificacao}
 
   def mount(_params, _session, socket) do
     scope = socket.assigns.current_scope
@@ -113,6 +111,11 @@ defmodule UspAvaliaWeb.ProfileLive.VerificarForm do
          socket
          |> put_flash(:info, "Pedido de verificação criado com sucesso.")
          |> push_navigate(to: ~p"/disciplinas")}
+
+      {:error, :unauthorized} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Você não está autorizado a criar um pedido de verificação.")}
 
       {:error, changeset} ->
         {:noreply,
