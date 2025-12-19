@@ -41,6 +41,7 @@ defmodule UspAvaliaWeb.Charts do
   attr :id, :string, required: true
   attr :labels, :list, required: true
   attr :series, :list, required: true
+  attr :title, :string, required: false, default: ""
 
   def simple_pie_chart(assigns) do
     ~H"""
@@ -49,6 +50,7 @@ defmodule UspAvaliaWeb.Charts do
       phx-hook="Chart"
       data-labels={Jason.encode!(@labels)}
       data-series={Jason.encode!(@series)}
+      data-title={@title}
     >
     </div>
     """

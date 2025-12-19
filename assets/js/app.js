@@ -35,6 +35,7 @@ const Hooks = {}
 
 Hooks.Chart = {
   mounted() {
+    const title = this.el.dataset.title
     const labelsData = JSON.parse(this.el.dataset.labels)
     const seriesData = JSON.parse(this.el.dataset.series)
 
@@ -44,7 +45,23 @@ Hooks.Chart = {
           width: 380,
           type: 'pie',
         },
+        title: {
+          text: title,
+          align: 'center',
+          margin: 10,
+          offsetX: 0,
+          offsetY: 0,
+          floating: false,
+          style: {
+            fontSize:  '14px',
+            fontWeight:  'bold',
+            color:  '#263238'
+          },
+      },
         labels: labelsData,
+        legend: {
+          show: false
+        },
         colors: ['#EF4444', '#22C55E'], 
         responsive: [{
           breakpoint: 480,

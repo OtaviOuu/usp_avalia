@@ -31,10 +31,13 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
         />
 
         <div class="card bg-base-100 shadow-xl p-6">
-          <h2 class="text-2xl font-semibold mb-4">Gráficos</h2>
           <.graficos
-            quantidade_negativos={@quantidade_negativos}
-            quantidade_positivos={@quantidade_positivos}
+            quantidade_negativos_geral={@quantidade_negativos_geral}
+            quantidade_positivos_geral={@quantidade_positivos_geral}
+            quantidade_negativos_aula={@quantidade_negativos_aula}
+            quantidade_positivos_aula={@quantidade_positivos_aula}
+            quantidade_negativos_prova={@quantidade_negativos_prova}
+            quantidade_positivos_prova={@quantidade_positivos_prova}
           />
         </div>
 
@@ -130,18 +133,21 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       <.simple_pie_chart
         id="example-pie-chart"
         labels={["Positivo", "Negativo"]}
-        series={[@quantidade_positivos, @quantidade_negativos]}
+        series={[@quantidade_positivos_geral, @quantidade_negativos_geral]}
+        title="Nota Geral"
       />
 
       <.simple_pie_chart
         id="example-pie-chart"
-        labels={["Positivo", "Negativo"]}
-        series={[@quantidade_positivos, @quantidade_negativos]}
+        labels={["Difícil", "Negativo"]}
+        series={[@quantidade_positivos_aula, @quantidade_negativos_aula]}
+        title="Aulas"
       />
       <.simple_pie_chart
         id="example-pie-chart"
         labels={["Positivo", "Negativo"]}
-        series={[@quantidade_positivos, @quantidade_negativos]}
+        series={[@quantidade_positivos_prova, @quantidade_negativos_prova]}
+        title="Provas"
       />
     </div>
     """
@@ -181,15 +187,32 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
   end
 
   # botar na db kk
+  # bão em
   defp handle_charts_data(socket, avaliacoes_data) do
-    positivos =
+    geral_positivos =
       Enum.count(avaliacoes_data.avaliacoes, fn a -> (a.nota_avaliacao + a.nota_aula) / 2 >= 5 end)
 
-    negativos =
+    geral_negativos =
       Enum.count(avaliacoes_data.avaliacoes, fn a -> (a.nota_avaliacao + a.nota_aula) / 2 < 5 end)
 
+    prova_positivos =
+      Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota_avaliacao >= 5 end)
+
+    prova_negativos =
+      Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota_avaliacao < 5 end)
+
+    aula_positivos =
+      Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota_aula >= 5 end)
+
+    aula_negativos =
+      Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota_aula < 5 end)
+
     socket
-    |> assign(:quantidade_positivos, positivos)
-    |> assign(:quantidade_negativos, negativos)
+    |> assign(:quantidade_positivos_geral, geral_positivos)
+    |> assign(:quantidade_negativos_geral, geral_negativos)
+    |> assign(:quantidade_positivos_aula, aula_positivos)
+    |> assign(:quantidade_negativos_aula, aula_negativos)
+    |> assign(:quantidade_positivos_prova, prova_positivos)
+    |> assign(:quantidade_negativos_prova, prova_negativos)
   end
 end
