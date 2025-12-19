@@ -53,7 +53,7 @@ defmodule UspAvaliaWeb.Layouts do
           </ul>
         </div>
         <ul
-          :if={@current_scope.user}
+          :if={@current_scope && @current_scope.user}
           class="menu menu-horizontal px-1 ml-4 space-x-4 items-center"
         >
           <li :if={ProfilesVerifications.can_create_pedido_validacao?(@current_scope)}>

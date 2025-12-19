@@ -2,9 +2,25 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Avaliacoes
+  import UspAvaliaWeb.Charts
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    if connected?(socket) do
+      Process.send_after(self(), :load_data, 500)
+    end
+
+    dataset = [
+      %{
+        name: "sales",
+        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+      },
+      %{
+        name: "profit",
+        data: [23, 27, 30, 38, 41, 47, 51, 58, 67]
+      }
+    ]
+
+    {:ok, assign(socket, dataset: dataset)}
   end
 
   def handle_params(%{"q" => q}, _url, socket) do
@@ -43,6 +59,29 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
               />
             </div>
           </form>
+        </div>
+        <div class="card bg-base-100 shadow-xl p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <.line_graph
+            id="line-chart-1"
+            height={420}
+            width={640}
+            dataset={@dataset}
+            categories={[1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]}
+          />
+          <.line_graph
+            id="line-chart-2"
+            height={420}
+            width={640}
+            dataset={@dataset}
+            categories={[1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]}
+          />
+          <.line_graph
+            id="line-chart-3"
+            height={420}
+            width={640}
+            dataset={@dataset}
+            categories={[1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]}
+          />
         </div>
 
         <div class="card bg-base-100 shadow-xl p-4 overflow-x-auto">
@@ -99,5 +138,23 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
       |> push_patch(to: ~p"/disciplinas?q=#{q}")
 
     {:noreply, socket}
+  end
+
+  def handle_info(:load_data, socket) do
+    new_dataset = [
+      %{
+        name: "sales",
+        data: Enum.map(1..9, fn _ -> Enum.random(20..150) end)
+      },
+      %{
+        name: "profit",
+        data: Enum.map(1..9, fn _ -> Enum.random(15..80) end)
+      }
+    ]
+
+    Process.send_after(self(), :load_data, 500)
+
+    {:noreply,
+     assign(socket, dataset: new_dataset) |> push_event("update-dataset", %{dataset: new_dataset})}
   end
 end

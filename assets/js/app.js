@@ -25,12 +25,53 @@ import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/usp_avalia"
 import topbar from "../vendor/topbar"
 
+
+
+const Hooks = {}
+
+
+
+
+Hooks.Chart = {
+  mounted() {
+    const chartConfig = JSON.parse(this.el.dataset.config)
+    const seriesData = JSON.parse(this.el.dataset.series)
+    const categoriesData = JSON.parse(this.el.dataset.categories)
+
+    const options = {
+      chart: Object.assign({
+        background: 'transparent',
+      }, chartConfig),
+      series: seriesData,
+      xaxis: {
+        categories: categoriesData
+      }
+    }
+    const chart = new ApexCharts(this.el, options);
+
+    chart.render();
+
+
+    this.handleEvent("update-dataset", data => {
+      chart.updateSeries(data.dataset)
+    })
+
+  }
+}
+
+
+
+
+const allHooks = { ...colocatedHooks, ...Hooks }
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  hooks: allHooks,
 })
+
+
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
@@ -79,5 +120,6 @@ if (process.env.NODE_ENV === "development") {
 
     window.liveReloader = reloader
   })
+
 }
 
