@@ -37,7 +37,7 @@ defmodule UspAvaliaWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <div class="navbar bg-base-100 shadow-sm">
+    <div class="navbar bg-base-100 shadow-sm fixed top-0 z-50 px-4">
       <div class="navbar-start">
         <div class="dropdown">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle">

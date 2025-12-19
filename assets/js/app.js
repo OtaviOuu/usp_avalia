@@ -24,6 +24,7 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/usp_avalia"
 import topbar from "../vendor/topbar"
+import { Colors } from "chart.js"
 
 
 
@@ -34,19 +35,32 @@ const Hooks = {}
 
 Hooks.Chart = {
   mounted() {
-    const chartConfig = JSON.parse(this.el.dataset.config)
+    const labelsData = JSON.parse(this.el.dataset.labels)
     const seriesData = JSON.parse(this.el.dataset.series)
-    const categoriesData = JSON.parse(this.el.dataset.categories)
 
     const options = {
-      chart: Object.assign({
-        background: 'transparent',
-      }, chartConfig),
-      series: seriesData,
-      xaxis: {
-        categories: categoriesData
-      }
-    }
+          series: seriesData,
+          chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: labelsData,
+        colors: ['#EF4444', '#22C55E'], 
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+
+
     const chart = new ApexCharts(this.el, options);
 
     chart.render();

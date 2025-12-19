@@ -38,6 +38,22 @@ defmodule UspAvaliaWeb.Charts do
     """
   end
 
+  attr :id, :string, required: true
+  attr :labels, :list, required: true
+  attr :series, :list, required: true
+
+  def simple_pie_chart(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      phx-hook="Chart"
+      data-labels={Jason.encode!(@labels)}
+      data-series={Jason.encode!(@series)}
+    >
+    </div>
+    """
+  end
+
   defp trim(map) do
     Map.reject(map, fn {_key, val} -> is_nil(val) || val == "" end)
   end

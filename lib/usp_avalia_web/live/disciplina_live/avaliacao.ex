@@ -2,6 +2,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Avaliacoes
+  import UspAvaliaWeb.Charts, only: [simple_pie_chart: 1]
 
   def mount(%{"codigo" => codigo, "professor_id" => professor_id}, _session, socket) do
     professor = Avaliacoes.get_professor_by_id(professor_id)
@@ -28,6 +29,15 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
           disciplina={@disciplina}
           professor={@professor}
         />
+
+        <div class="card bg-base-100 shadow-xl p-6">
+          <h2 class="text-2xl font-semibold mb-4">Gráficos</h2>
+          <.graficos
+            quantidade_negativos={@quantidade_negativos}
+            quantidade_positivos={@quantidade_positivos}
+          />
+        </div>
+
         <div class="card bg-base-100 shadow-xl p-6">
           <h2 class="text-2xl font-semibold mb-4">Avaliações</h2>
           <.avaliacoes_table
@@ -114,6 +124,29 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     """
   end
 
+  defp graficos(assigns) do
+    ~H"""
+    <div class="grid grid-cols-3 gap-6">
+      <.simple_pie_chart
+        id="example-pie-chart"
+        labels={["Positivo", "Negativo"]}
+        series={[@quantidade_positivos, @quantidade_negativos]}
+      />
+
+      <.simple_pie_chart
+        id="example-pie-chart"
+        labels={["Positivo", "Negativo"]}
+        series={[@quantidade_positivos, @quantidade_negativos]}
+      />
+      <.simple_pie_chart
+        id="example-pie-chart"
+        labels={["Positivo", "Negativo"]}
+        series={[@quantidade_positivos, @quantidade_negativos]}
+      />
+    </div>
+    """
+  end
+
   attr :current_scope, :map, required: true
   attr :disciplina, :map, required: true
   attr :professor, :map, required: true
@@ -144,5 +177,15 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
     socket
     |> assign(:avaliacoes_data, avaliacoes_data)
     |> assign(:quantidade_avaliacoes, length(avaliacoes_data.avaliacoes))
+    |> handle_charts_data(avaliacoes_data)
+  end
+
+  defp handle_charts_data(socket, avaliacoes_data) do
+    positivos = Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota >= 5 end)
+    negativos = Enum.count(avaliacoes_data.avaliacoes, fn a -> a.nota < 5 end)
+
+    socket
+    |> assign(:quantidade_positivos, positivos)
+    |> assign(:quantidade_negativos, negativos)
   end
 end
