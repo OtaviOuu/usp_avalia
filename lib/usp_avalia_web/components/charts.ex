@@ -1,4 +1,5 @@
 defmodule UspAvaliaWeb.Charts do
+  alias Contex.BarChart
   use Phoenix.Component
 
   attr :id, :string, required: true
@@ -49,6 +50,24 @@ defmodule UspAvaliaWeb.Charts do
       id={@id}
       phx-hook="Chart"
       data-labels={Jason.encode!(@labels)}
+      data-series={Jason.encode!(@series)}
+      data-title={@title}
+    >
+    </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :labels, :list, required: true
+  attr :series, :list, required: true
+  attr :title, :string, required: false, default: ""
+
+  def simple_column_chart(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      phx-hook="ColumnChart"
+      data-categories={Jason.encode!(@labels)}
       data-series={Jason.encode!(@series)}
       data-title={@title}
     >

@@ -137,15 +137,14 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       <.simple_pie_chart
         id="example-pie-chart"
         labels={["Positivo", "Negativo"]}
-        series={[@quantidade_positivos_geral, @quantidade_negativos_geral]}
-        title="Nota Geral"
+        series={[@quantidade_positivos_aula, @quantidade_negativos_aula]}
+        title="Aulas"
       />
-
       <.simple_pie_chart
         id="example-pie-chart"
         labels={["Positivo", "Negativo"]}
-        series={[@quantidade_positivos_aula, @quantidade_negativos_aula]}
-        title="Aulas"
+        series={[@quantidade_positivos_geral, @quantidade_negativos_geral]}
+        title="Nota Geral"
       />
       <.simple_pie_chart
         id="example-pie-chart"

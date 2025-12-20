@@ -62,7 +62,7 @@ Hooks.Chart = {
         legend: {
           show: false
         },
-        colors: ['#EF4444', '#22C55E'], 
+        colors: ['#22C55E', '#EF4444'], 
         responsive: [{
           breakpoint: 480,
           options: {
@@ -90,6 +90,97 @@ Hooks.Chart = {
   }
 }
 
+
+Hooks.ColumnChart = {
+  mounted() {
+    const title = this.el.dataset.title
+    const categoriesData = JSON.parse(this.el.dataset.categories)
+    const seriesData = JSON.parse(this.el.dataset.series)
+
+    const options = {
+          series: [{
+          name: title,
+          data: seriesData
+        }],
+          chart: {
+            height: 450,
+            width: 400,
+            type: 'bar',
+            
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            dataLabels: {
+              position: 'top', // top, center, bottom
+            },
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          offsetY: 20,
+          style: {
+            fontSize: '12px',
+            colors: ["#304758"]
+          }
+        },
+        
+        xaxis: {
+          categories: categoriesData,
+          position: 'top',
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+          crosshairs: {
+            fill: {
+              type: 'gradient',
+              gradient: {
+                colorFrom: '#D8E3F0',
+                colorTo: '#BED1E6',
+                stops: [0, 100],
+                opacityFrom: 0.4,
+                opacityTo: 0.5,
+              }
+            }
+          },
+          tooltip: {
+            enabled: true,
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+            formatter: function (val) {
+              return val + "%";
+            }
+          }
+        
+        },
+        title: {
+          text: title,
+          floating: true,
+          offsetY: 0,
+          align: 'left',
+          style: {
+            color: '#444'
+          }
+        }
+        };
+
+        var chart = new ApexCharts(this.el, options);
+        chart.render();
+  }
+}
+      
 
 
 

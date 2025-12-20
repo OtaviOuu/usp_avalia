@@ -93,7 +93,10 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
         socket =
           socket
           |> put_flash(:info, "Avaliação criada com sucesso!")
-          |> push_navigate(to: ~p"/disciplinas/#{socket.assigns.disciplina.codigo}")
+          |> push_navigate(
+            to:
+              ~p"/disciplinas/#{socket.assigns.disciplina.codigo}/professores/#{socket.assigns.professor.id}/"
+          )
 
         {:noreply, socket}
 
