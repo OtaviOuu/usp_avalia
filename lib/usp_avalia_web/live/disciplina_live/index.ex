@@ -2,7 +2,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Avaliacoes
-  import UspAvaliaWeb.Charts
 
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -46,9 +45,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
           </form>
         </div>
 
-        <div class="card bg-base-100 shadow-xl p-4 overflow-x-auto">
-          <.disciplinas_table disciplinas={@disciplinas} />
-        </div>
+        <.disciplinas_table disciplinas={@disciplinas} />
       </div>
     </Layouts.app>
     """
@@ -58,27 +55,33 @@ defmodule UspAvaliaWeb.DisciplinaLive.Index do
 
   def disciplinas_table(assigns) do
     ~H"""
-    <table class="table w-full table-fixed">
-      <thead>
-        <tr class="text-base font-semibold">
-          <th>Código</th>
-          <th>Nome</th>
-          <th>Instituto</th>
-        </tr>
-      </thead>
+    <div class="card bg-base-100 shadow-xl p-4 overflow-x-auto">
+      <%= if Enum.empty?(@disciplinas) do %>
+        <p class="text-center italic">Nenhuma disciplina encontrada</p>
+      <% else %>
+        <table class="table w-full table-fixed">
+          <thead>
+            <tr class="text-base font-semibold">
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Instituto</th>
+            </tr>
+          </thead>
 
-      <tbody>
-        <tr
-          :for={disciplina <- @disciplinas}
-          phx-click={JS.navigate("/disciplinas/#{disciplina.codigo}")}
-          class="hover:bg-base-200 hover:cursor-pointer"
-        >
-          <td class="font-mono">{disciplina.codigo}</td>
-          <td>{disciplina.nome}</td>
-          <td>{disciplina.instituto}</td>
-        </tr>
-      </tbody>
-    </table>
+          <tbody>
+            <tr
+              :for={disciplina <- @disciplinas}
+              phx-click={JS.navigate("/disciplinas/#{disciplina.codigo}")}
+              class="hover:bg-base-200 hover:cursor-pointer"
+            >
+              <td class="font-mono">{disciplina.codigo}</td>
+              <td>{disciplina.nome}</td>
+              <td>{disciplina.instituto}</td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
     """
   end
 
