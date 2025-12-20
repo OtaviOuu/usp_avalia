@@ -11,7 +11,8 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
     :disciplina_codigo,
     :comentario_avaliacao,
     :comentario_aula,
-    :comentario_cobra_presenca
+    :comentario_cobra_presenca,
+    :comentario_geral
   ]
   @optional_fields []
 
