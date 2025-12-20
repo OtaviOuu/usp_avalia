@@ -9,11 +9,11 @@ defmodule UspAvalia.Avaliacoes.Repo.Avaliacao do
     |> handle_preload(opts)
   end
 
-  def list_by_code_and_professor(disciplina_id, professor_id) do
+  def list_by_code_and_professor(disciplina_codigo, professor_id) do
     base_query =
       from a in Avaliacao,
         where:
-          a.disciplina_id == ^disciplina_id and
+          a.disciplina_codigo == ^disciplina_codigo and
             a.professor_id == ^professor_id
 
     avaliacoes =

@@ -3,7 +3,7 @@ defmodule UspAvaliaWeb.ProfessorLive.Show do
   use UspAvaliaWeb, :live_view
 
   def mount(%{"id" => id}, _session, socket) do
-    {:ok, professor} = Avaliacoes.get_professor_by_id(id)
+    professor = Avaliacoes.get_professor_by_id(id)
 
     {:ok,
      socket

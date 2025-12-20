@@ -3,8 +3,7 @@ defmodule UspAvalia.Repo.Migrations.CreateDisciplinasTable do
 
   def change do
     create table(:disciplinas, primary_key: false) do
-      add :id, :uuid, primary_key: true
-      add :codigo, :string, null: false
+      add :codigo, :string, primary_key: true
       add :nome, :string, null: false
       add :instituto, :string, null: false
 

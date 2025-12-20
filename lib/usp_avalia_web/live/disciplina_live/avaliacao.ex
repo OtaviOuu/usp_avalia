@@ -46,7 +46,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
           <.avaliacoes_table
             avaliacoes_data={@avaliacoes_data}
             professor={@professor}
-            disciplina_code={@codigo}
+            disciplina_codigo={@codigo}
           />
         </div>
       </div>
@@ -73,7 +73,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       <div class="stats  w-full bg-base-200">
         <div class="stat">
           <div class="stat-title">Nota média</div>
-          <div class="stat-value">{@media |> Decimal.round(2)}</div>
+          <div :if={@media} class="stat-value">{@media |> Decimal.round(2)}</div>
         </div>
 
         <div class="stat">
@@ -95,7 +95,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
 
   attr :avaliacoes_data, :list, required: true
   attr :professor, :map, required: true
-  attr :disciplina_code, :string, required: true
+  attr :disciplina_codigo, :string, required: true
 
   defp avaliacoes_table(assigns) do
     ~H"""
@@ -103,8 +103,10 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
       <table class="table">
         <thead>
           <tr>
-            <th>Comentário</th>
-            <th>Nota</th>
+            <th>Comentário Geral</th>
+            <th>Nota Geral</th>
+            <th>Nota Prova</th>
+            <th>Nota Aula</th>
           </tr>
         </thead>
 
@@ -113,13 +115,15 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
             :for={avaliacao <- @avaliacoes_data.avaliacoes}
             phx-click={
               JS.navigate(
-                "/disciplinas/#{@disciplina_code}/professores/#{@professor.id}/avaliacoes/#{avaliacao.id}"
+                "/disciplinas/#{@disciplina_codigo}/professores/#{@professor.id}/avaliacoes/#{avaliacao.id}"
               )
             }
             class="hover:bg-base-200 hover:cursor-pointer"
           >
-            <td>{avaliacao.comentario_avaliacao}</td>
+            <td>{avaliacao.comentario_geral}</td>
+            <td>{(avaliacao.nota_avaliacao + avaliacao.nota_aula) / 2}</td>
             <td>{avaliacao.nota_avaliacao}</td>
+            <td>{avaliacao.nota_aula}</td>
           </tr>
         </tbody>
       </table>
@@ -139,7 +143,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
 
       <.simple_pie_chart
         id="example-pie-chart"
-        labels={["Difícil", "Negativo"]}
+        labels={["Positivo", "Negativo"]}
         series={[@quantidade_positivos_aula, @quantidade_negativos_aula]}
         title="Aulas"
       />
@@ -178,7 +182,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliacao do
 
   defp assign_avaliacoes(%{assigns: %{professor: professor, disciplina: disciplina}} = socket) do
     avaliacoes_data =
-      Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.id, professor.id)
+      Avaliacoes.list_avaliacoes_by_code_and_professor(disciplina.codigo, professor.id)
 
     socket
     |> assign(:avaliacoes_data, avaliacoes_data)

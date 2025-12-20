@@ -15,7 +15,9 @@ defmodule UspAvalia.Avaliacoes.Entities.Professor do
 
     field :numero_disciplinas, :integer, virtual: true
 
-    many_to_many :disciplinas, Disciplina, join_through: "professores_disciplinas"
+    many_to_many :disciplinas, Disciplina,
+      join_through: "professores_disciplinas",
+      join_keys: [professor_id: :id, disciplina_codigo: :codigo]
 
     timestamps(type: :utc_datetime)
   end

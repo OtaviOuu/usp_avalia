@@ -7,13 +7,15 @@ defmodule UspAvalia.Avaliacoes.Entities.Disciplina do
   @fields [:codigo, :nome, :instituto]
   @required_fields []
 
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key false
   schema "disciplinas" do
-    field :codigo, :string
+    field :codigo, :string, primary_key: true
     field :nome, :string
     field :instituto, :string
 
-    many_to_many :professores, Professor, join_through: "professores_disciplinas"
+    many_to_many :professores, Professor,
+      join_through: "professores_disciplinas",
+      join_keys: [disciplina_codigo: :codigo, professor_id: :id]
 
     timestamps(type: :utc_datetime)
   end

@@ -2,12 +2,17 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Avaliacoes
+  alias UspAvalia.Avaliacoes.Entities.ProfessoreDisciplina
 
+  alias UspAvalia.Avaliacoes
   on_mount {UspAvaliaWeb.UserAuth, :require_authenticated}
 
   def mount(%{"codigo" => codigo, "professor_id" => professor_id}, _session, socket) do
-    professor = Avaliacoes.get_professor_by_id(professor_id)
-    disciplina = Avaliacoes.get_disciplina_by_code(codigo)
+    professor_disciplina =
+      Avaliacoes.Repo.ProfessorDisciplina.get_by_professor_and_disciplina(
+        professor_id,
+        codigo
+      )
 
     change_avaliacao =
       Avaliacoes.change_avaliacao(
@@ -17,8 +22,8 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
 
     socket =
       socket
-      |> assign(:disciplina, disciplina)
-      |> assign(:professor, professor)
+      |> assign(:disciplina, professor_disciplina.disciplina)
+      |> assign(:professor, professor_disciplina.professor)
       |> assign(:form_avaliacao, change_avaliacao |> to_form(as: :avaliacao))
 
     {:ok, socket}
@@ -33,26 +38,24 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
         </h1>
         <.form for={@form_avaliacao} phx-submit="save">
           <.input
+            type="textarea"
+            label="Comentário Geral"
+            field={@form_avaliacao[:comentario_geral]}
+          />
+          <.input
             type="number"
             label="Nota da Avaliação"
-            min="0"
-            max="10"
             field={@form_avaliacao[:nota_avaliacao]}
-            required
           />
           <.input
             type="textarea"
             label="Comentário da Avaliação"
-            name="comentario_avaliacao"
             field={@form_avaliacao[:comentario_avaliacao]}
           />
           <.input
             type="number"
             label="Nota da Aula"
-            min="0"
-            max="10"
             field={@form_avaliacao[:nota_aula]}
-            required
           />
           <.input
             type="textarea"
@@ -69,6 +72,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
             label="Comentário sobre Cobrança de Presença"
             field={@form_avaliacao[:comentario_cobra_presenca]}
           />
+
           <.button type="submit">Enviar Avaliação</.button>
         </.form>
       </div>
@@ -82,7 +86,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
     attrs =
       avaliacao_params
       |> Map.put("professor_id", socket.assigns.professor.id)
-      |> Map.put("disciplina_id", socket.assigns.disciplina.id)
+      |> Map.put("disciplina_codigo", socket.assigns.disciplina.codigo)
 
     case Avaliacoes.create_avaliacao(scope, attrs) do
       {:ok, _avaliacao} ->
@@ -94,9 +98,11 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
         {:noreply, socket}
 
       {:error, changeset} ->
+        IO.inspect(changeset.errors, label: "Errors")
+
         socket =
           socket
-          |> assign(:form_avaliacao, changeset |> to_form())
+          |> assign(:form_avaliacao, changeset |> to_form(action: :validate))
           |> put_flash(:error, "Erro ao criar avaliação. Vc é aluno usp?")
 
         {:noreply, socket}

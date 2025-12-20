@@ -6,8 +6,10 @@ defmodule UspAvalia.Avaliacoes.Entities.ProfessoreDisciplina do
   @primary_key false
   schema "professores_disciplinas" do
     belongs_to :professor, Professor, type: :binary_id
-    belongs_to :disciplina, Disciplina, type: :binary_id
 
-    timestamps(type: :utc_datetime)
+    belongs_to :disciplina, Disciplina,
+      type: :string,
+      foreign_key: :disciplina_codigo,
+      references: :codigo
   end
 end

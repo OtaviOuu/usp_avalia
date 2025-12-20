@@ -3,13 +3,24 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
   import Ecto.Changeset
   alias UspAvalia.Avaliacoes.Entities.{Professor, Disciplina}
 
-  @required_fields [:nota_avaliacao, :nota_aula, :cobra_presenca?, :professor_id, :disciplina_id]
-  @optional_fields [:comentario_avaliacao, :comentario_aula, :comentario_cobra_presenca]
+  @required_fields [
+    :nota_avaliacao,
+    :nota_aula,
+    :cobra_presenca?,
+    :professor_id,
+    :disciplina_codigo,
+    :comentario_avaliacao,
+    :comentario_aula,
+    :comentario_cobra_presenca
+  ]
+  @optional_fields []
 
   @all_fields @optional_fields ++ @required_fields
 
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "avaliacoes" do
+    field :comentario_geral, :string
+
     field :nota_avaliacao, :integer
     field :comentario_avaliacao, :string
 
@@ -20,7 +31,11 @@ defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
     field :comentario_cobra_presenca, :string
 
     belongs_to :professor, Professor, type: :binary_id
-    belongs_to :disciplina, Disciplina, type: :binary_id
+
+    belongs_to :disciplina, Disciplina,
+      type: :string,
+      foreign_key: :disciplina_codigo,
+      references: :codigo
 
     belongs_to :author, UspAvalia.Accounts.User
 
