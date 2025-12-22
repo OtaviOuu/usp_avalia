@@ -1,4 +1,4 @@
-defmodule UspAvalia.Avaliacoes.UseCases.SearchDisciplinas do
+defmodule UspAvalia.Avaliacoes.SearchDisciplinas do
   import Ecto.Query, warn: false
   alias UspAvalia.Repo
 

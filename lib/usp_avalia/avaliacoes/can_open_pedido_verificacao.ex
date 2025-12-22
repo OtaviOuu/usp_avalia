@@ -1,4 +1,4 @@
-defmodule UspAvalia.Avaliacoes.UseCases.CanOpenPedidoVerificacao do
+defmodule UspAvalia.Avaliacoes.CanOpenPedidoVerificacao do
   alias UspAvalia.Accounts.Scope
 
   alias UspAvalia.ProfilesVerifications.PedidoVerificacao

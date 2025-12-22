@@ -1,4 +1,4 @@
-defmodule UspAvalia.Avaliacoes.UseCases.CreateAvaliacao do
+defmodule UspAvalia.Avaliacoes.CreateAvaliacao do
   alias UspAvalia.Avaliacoes.Avaliacao
 
   alias UspAvalia.Repo

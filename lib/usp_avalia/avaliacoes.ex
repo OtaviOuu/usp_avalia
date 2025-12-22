@@ -23,7 +23,7 @@ defmodule UspAvalia.Avaliacoes do
 
   def create_avaliacao(scope, attrs) do
     with :ok <- Bodyguard.permit(__MODULE__, :create_avaliacao, scope) do
-      Avaliacoes.UseCases.CreateAvaliacao.call(scope, attrs)
+      Avaliacoes.CreateAvaliacao.call(scope, attrs)
     end
   end
 
@@ -43,10 +43,10 @@ defmodule UspAvalia.Avaliacoes do
     as: :changeset
 
   defdelegate search_disciplinas(query),
-    to: UspAvalia.Avaliacoes.UseCases.SearchDisciplinas,
+    to: UspAvalia.Avaliacoes.SearchDisciplinas,
     as: :call
 
   defdelegate can_open_pedido_verificacao?(scope),
-    to: UspAvalia.Avaliacoes.UseCases.CanOpenPedidoVerificacao,
+    to: UspAvalia.Avaliacoes.CanOpenPedidoVerificacao,
     as: :call
 end
