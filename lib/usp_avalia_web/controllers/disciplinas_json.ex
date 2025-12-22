@@ -1,5 +1,5 @@
 defmodule UspAvaliaWeb.DisciplinasJSON do
-  alias UspAvalia.Avaliacoes.Entities.Disciplina
+  alias UspAvalia.Avaliacoes.Disciplina
 
   def index(%{disciplinas: disciplinas}) do
     %{

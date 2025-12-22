@@ -1,7 +1,7 @@
-defmodule UspAvalia.Avaliacoes.Entities.Avaliacao do
+defmodule UspAvalia.Avaliacoes.Avaliacao do
   use Ecto.Schema
   import Ecto.Changeset
-  alias UspAvalia.Avaliacoes.Entities.{Professor, Disciplina}
+  alias UspAvalia.Avaliacoes.{Professor, Disciplina}
 
   @required_fields [
     :nota_avaliacao,

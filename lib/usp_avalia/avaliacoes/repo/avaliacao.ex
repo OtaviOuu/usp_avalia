@@ -1,6 +1,6 @@
 defmodule UspAvalia.Avaliacoes.Repo.Avaliacao do
   alias UspAvalia.Repo
-  alias UspAvalia.Avaliacoes.Entities.Avaliacao
+  alias UspAvalia.Avaliacoes.Avaliacao
   import Ecto.Query
 
   def get_by_id(id, opts) do

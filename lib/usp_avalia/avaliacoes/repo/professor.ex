@@ -1,5 +1,5 @@
 defmodule UspAvalia.Avaliacoes.Repo.Professor do
-  alias UspAvalia.Avaliacoes.Entities.Professor
+  alias UspAvalia.Avaliacoes.Professor
   alias UspAvalia.Repo
   import Ecto.Query
 

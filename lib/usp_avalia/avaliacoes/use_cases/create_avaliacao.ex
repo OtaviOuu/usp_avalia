@@ -1,5 +1,5 @@
 defmodule UspAvalia.Avaliacoes.UseCases.CreateAvaliacao do
-  alias UspAvalia.Avaliacoes.Entities.Avaliacao
+  alias UspAvalia.Avaliacoes.Avaliacao
 
   alias UspAvalia.Repo
   alias UspAvalia.Accounts.Scope

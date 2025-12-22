@@ -1,7 +1,7 @@
-defmodule UspAvalia.Avaliacoes.Entities.ProfessoreDisciplina do
+defmodule UspAvalia.Avaliacoes.ProfessoreDisciplina do
   use Ecto.Schema
 
-  alias UspAvalia.Avaliacoes.Entities.{Professor, Disciplina}
+  alias UspAvalia.Avaliacoes.{Professor, Disciplina}
 
   @primary_key false
   schema "professores_disciplinas" do

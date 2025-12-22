@@ -2,7 +2,7 @@ defmodule UspAvalia.Avaliacoes.Repo.Disciplina do
   use Ecto.Schema
 
   alias UspAvalia.Repo
-  alias UspAvalia.Avaliacoes.Entities.Disciplina
+  alias UspAvalia.Avaliacoes.Disciplina
   import Ecto.Query, warn: false
 
   def get_all(limit \\ 15) when is_integer(limit) do

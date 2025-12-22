@@ -1,8 +1,8 @@
-defmodule UspAvalia.Avaliacoes.Entities.Disciplina do
+defmodule UspAvalia.Avaliacoes.Disciplina do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias UspAvalia.Avaliacoes.Entities.Professor
+  alias UspAvalia.Avaliacoes.Professor
 
   @fields [:codigo, :nome, :instituto]
   @required_fields []

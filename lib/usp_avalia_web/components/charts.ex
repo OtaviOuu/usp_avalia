@@ -1,5 +1,4 @@
 defmodule UspAvaliaWeb.Charts do
-  alias Contex.BarChart
   use Phoenix.Component
 
   attr :id, :string, required: true

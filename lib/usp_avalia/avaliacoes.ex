@@ -39,7 +39,7 @@ defmodule UspAvalia.Avaliacoes do
   defdelegate get_avaliacao_by_id(id, opts \\ []), to: Repo.Avaliacao, as: :get_by_id
 
   defdelegate change_avaliacao(attrs, scope),
-    to: Avaliacoes.Entities.Avaliacao,
+    to: Avaliacoes.Avaliacao,
     as: :changeset
 
   defdelegate search_disciplinas(query),

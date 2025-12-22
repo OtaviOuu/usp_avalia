@@ -2,7 +2,7 @@ defmodule UspAvalia.Avaliacoes.UseCases.SearchDisciplinas do
   import Ecto.Query, warn: false
   alias UspAvalia.Repo
 
-  alias UspAvalia.Avaliacoes.Entities.Disciplina
+  alias UspAvalia.Avaliacoes.Disciplina
 
   def call(query) when is_binary(query) do
     query_downcased = String.downcase(query)

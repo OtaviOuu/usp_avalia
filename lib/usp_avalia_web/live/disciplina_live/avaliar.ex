@@ -2,7 +2,6 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
   use UspAvaliaWeb, :live_view
 
   alias UspAvalia.Avaliacoes
-  alias UspAvalia.Avaliacoes.Entities.ProfessoreDisciplina
 
   alias UspAvalia.Avaliacoes
   on_mount {UspAvaliaWeb.UserAuth, :require_authenticated}

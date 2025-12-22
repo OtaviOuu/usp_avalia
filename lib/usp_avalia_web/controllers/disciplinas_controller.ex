@@ -2,7 +2,7 @@ defmodule UspAvaliaWeb.DisciplinasController do
   use UspAvaliaWeb, :controller
 
   alias UspAvalia.Avaliacoes
-  alias UspAvalia.Avaliacoes.Entities.Disciplina
+  alias UspAvalia.Avaliacoes.Disciplina
   action_fallback UspAvaliaWeb.FallbackController
 
   def index(conn, _params) do
