@@ -34,6 +34,10 @@ defmodule UspAvalia.Avaliacoes do
     end
   end
 
+  def search_professores(search_term, codigo) do
+    UspAvalia.Avaliacoes.SearchProfessores.call(search_term, codigo)
+  end
+
   defdelegate get_professor_by_id(id), to: Repo.Professor, as: :get_by_id
   defdelegate get_disciplina_by_code(code), to: Repo.Disciplina, as: :get_by_code
   defdelegate get_avaliacao_by_id(id, opts \\ []), to: Repo.Avaliacao, as: :get_by_id

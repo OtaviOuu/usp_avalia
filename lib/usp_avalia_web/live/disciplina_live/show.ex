@@ -40,12 +40,26 @@ defmodule UspAvaliaWeb.DisciplinaLive.Show do
           <h2 class="text-2xl font-semibold mb-4">
             Professores que ministram {@disciplina.codigo}
           </h2>
-
+          <form phx-change="search_professores" class="mb-4">
+            <label class="input input-bordered">
+              <.icon name="hero-magnifying-glass" class="icon-sm" />
+              <input type="search" name="value" required placeholder="Search" />
+            </label>
+          </form>
           <.professores_table professores={@professores} codigo={@disciplina.codigo} />
         </div>
       </div>
     </Layouts.app>
     """
+  end
+
+  def handle_event("search_professores", %{"value" => value}, socket) do
+    codigo = socket.assigns.disciplina.codigo
+
+    professores =
+      Avaliacoes.search_professores(value, codigo)
+
+    {:noreply, assign(socket, :professores, professores)}
   end
 
   attr :professores, :list, required: true
