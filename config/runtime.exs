@@ -39,7 +39,11 @@ if config_env() == :prod do
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
     # For machines with several cores, consider starting multiple pools of `pool_size`
     # pool_count: 4,
-    socket_options: maybe_ipv6
+    socket_options: maybe_ipv6,
+    ssl: true,
+    ssl_opts: [
+      verify: :verify_none
+    ]
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -53,7 +57,8 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("RENDER_EXTERNAL_HOSTNAME") || "localhost"
+  port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :usp_avalia, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
