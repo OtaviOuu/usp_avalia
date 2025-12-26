@@ -12,6 +12,8 @@ defmodule UspAvalia.Avaliacoes.Repo.Disciplina do
   end
 
   def get_by_code(code) do
-    Repo.get_by(Disciplina, codigo: code)
+    Disciplina
+    |> Repo.get_by(codigo: code)
+    |> Repo.preload(:professores)
   end
 end

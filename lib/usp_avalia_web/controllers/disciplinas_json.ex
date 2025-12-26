@@ -1,5 +1,5 @@
 defmodule UspAvaliaWeb.DisciplinasJSON do
-  alias UspAvalia.Avaliacoes.Disciplina
+  alias UspAvalia.Avaliacoes.{Disciplina, Professor}
 
   def index(%{disciplinas: disciplinas}) do
     %{
@@ -14,10 +14,22 @@ defmodule UspAvaliaWeb.DisciplinasJSON do
   end
 
   defp data(%Disciplina{} = disciplina) do
+    IO.inspect(disciplina.professores, label: "Professores carregados")
+
     %{
       nome: disciplina.nome,
       instituto: disciplina.instituto,
-      codigo: disciplina.codigo
+      codigo: disciplina.codigo,
+      professores: Enum.map(disciplina.professores, &professor_data/1)
+    }
+  end
+
+  defp professor_data(%Professor{} = professor) do
+    %{
+      id: professor.id,
+      nome: professor.nome,
+      email: professor.email,
+      salario: professor.salario
     }
   end
 end
