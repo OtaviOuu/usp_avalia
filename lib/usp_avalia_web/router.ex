@@ -15,7 +15,7 @@ defmodule UspAvaliaWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    #plug :fetch_current_scope_for_api_user
+    # plug :fetch_current_scope_for_api_user
   end
 
   scope "/api", UspAvaliaWeb do
@@ -23,6 +23,7 @@ defmodule UspAvaliaWeb.Router do
 
     get "/disciplinas", DisciplinasController, :index
     get "/disciplinas/:code", DisciplinasController, :show
+    get "/professores", ProfessoresController, :index
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
