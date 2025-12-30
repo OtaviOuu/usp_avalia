@@ -64,7 +64,12 @@ defmodule UspAvaliaWeb.Layouts do
           </li>
         </ul>
         <li :if={!@current_scope}>
-          <.google_auth_button />
+          <.link
+            navigate={~p"/users/log-in"}
+            class="btn btn-ghost underline"
+          >
+            Log in
+          </.link>
         </li>
       </div>
       <div class="navbar-center">

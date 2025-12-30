@@ -15,11 +15,11 @@ defmodule UspAvaliaWeb.UserLive.Login do
               <%= if @current_scope do %>
                 You need to reauthenticate to perform sensitive actions on your account.
               <% else %>
-                Don't have an account? <.link
+                Não possui uma conta? <.link
                   navigate={~p"/users/register"}
                   class="font-semibold text-brand hover:underline"
                   phx-no-format
-                >Sign up</.link> for an account now.
+                >Registrar</.link> uma conta agora.
               <% end %>
             </:subtitle>
           </.header>
@@ -35,26 +35,9 @@ defmodule UspAvaliaWeb.UserLive.Login do
           </div>
         </div>
 
-        <.form
-          :let={f}
-          for={@form}
-          id="login_form_magic"
-          action={~p"/users/log-in"}
-          phx-submit="submit_magic"
-        >
-          <.input
-            readonly={!!@current_scope}
-            field={f[:email]}
-            type="email"
-            label="Email"
-            autocomplete="email"
-            required
-            phx-mounted={JS.focus()}
-          />
-          <.button class="btn btn-primary w-full">
-            Log in with email <span aria-hidden="true">→</span>
-          </.button>
-        </.form>
+        <div class="flex justify-center">
+          <.google_auth_button />
+        </div>
 
         <div class="divider">or</div>
 
