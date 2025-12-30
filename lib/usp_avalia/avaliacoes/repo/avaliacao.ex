@@ -12,6 +12,7 @@ defmodule UspAvalia.Avaliacoes.Repo.Avaliacao do
   def list_by_code_and_professor(disciplina_codigo, professor_id) do
     base_query =
       from a in Avaliacao,
+        limit: 20,
         where:
           a.disciplina_codigo == ^disciplina_codigo and
             a.professor_id == ^professor_id
