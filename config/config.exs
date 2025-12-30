@@ -7,6 +7,11 @@
 # General application configuration
 import Config
 
+config :ueberauth, Ueberauth,
+  providers: [
+    google: {Ueberauth.Strategy.Google, [default_scope: "email profile"]}
+  ]
+
 config :usp_avalia, :scopes,
   user: [
     default: true,

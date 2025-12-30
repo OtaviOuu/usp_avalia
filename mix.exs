@@ -69,7 +69,9 @@ defmodule UspAvalia.MixProject do
       {:bandit, "~> 1.5"},
       {:hammer, "~> 7.0.0"},
       {:contex, "~> 0.5"},
-      {:bodyguard, "~> 2.4.3"}
+      {:bodyguard, "~> 2.4.3"},
+      {:ueberauth, "~> 0.10.8"},
+      {:ueberauth_google, "~> 0.12.1"}
     ]
   end
 

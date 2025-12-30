@@ -10,7 +10,16 @@ defmodule UspAvalia.Accounts.User do
     field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
     field :is_admin, :boolean, default: false
+    field :is_oauth_user, :boolean, default: false
     timestamps(type: :utc_datetime)
+  end
+
+  def oauth_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email])
+    |> validate_required([:email])
+    |> validate_email(opts)
+    |> put_change(:is_oauth_user, true)
   end
 
   @doc """

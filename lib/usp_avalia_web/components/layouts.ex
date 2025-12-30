@@ -39,19 +39,6 @@ defmodule UspAvaliaWeb.Layouts do
     ~H"""
     <div class="navbar bg-base-100 shadow-sm fixed top-0 z-50 px-4">
       <div class="navbar-start">
-        <div class="dropdown">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-            <.icon name="hero-bars-3" class="size-5" />
-          </div>
-          <ul
-            tabindex="-1"
-            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-          >
-            <li><a>Homepage</a></li>
-            <li><a>Portfolio</a></li>
-            <li><a>About</a></li>
-          </ul>
-        </div>
         <ul
           :if={@current_scope && @current_scope.user}
           class="menu menu-horizontal px-1 ml-4 space-x-4 items-center"
@@ -76,14 +63,15 @@ defmodule UspAvaliaWeb.Layouts do
             Verificado: {@current_scope.user.verified}
           </li>
         </ul>
+        <li :if={!@current_scope}>
+          <.google_auth_button />
+        </li>
       </div>
       <div class="navbar-center">
         <.link navigate="/disciplinas" class="btn btn-ghost text-xl">USP avalia</.link>
       </div>
       <div class="navbar-end">
-        <div>
-          <.theme_toggle />
-        </div>
+        <ul class="menu menu-horizontal px-1 space-x-4 items-center"></ul>
       </div>
     </div>
 

@@ -109,5 +109,10 @@ defmodule UspAvaliaWeb.Router do
         delete "/log-out", UserSessionController, :delete
       end
     end
+
+    scope "/auth" do
+      get "/:provider", OAuthController, :request
+      get "/:provider/callback", OAuthController, :callback
+    end
   end
 end
