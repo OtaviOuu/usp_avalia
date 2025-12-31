@@ -1,3 +1,4 @@
+.env
 /priv/static/uploads/
 
 # The directory Mix will write compiled artifacts to.

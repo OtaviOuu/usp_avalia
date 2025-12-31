@@ -1,7 +1,6 @@
 defmodule UspAvalia.ProfilesVerifications do
   @behaviour Bodyguard.Policy
 
-  def authorize(:create_pedido_validacao, %{user: %{verified: false}}, _), do: :ok
   def authorize(:create_pedido_validacao, _, _), do: :error
 
   alias UspAvalia.ProfilesVerifications
