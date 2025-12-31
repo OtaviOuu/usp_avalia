@@ -47,7 +47,7 @@ config :usp_avalia, UspAvaliaWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :usp_avalia, UspAvalia.Mailer, adapter: Swoosh.Adapters.Local
+config :usp_avalia, UspAvalia.Mailer, adapter: Swoosh.Adapters.Mailgun
 
 # Configure esbuild (the version is required)
 config :esbuild,
