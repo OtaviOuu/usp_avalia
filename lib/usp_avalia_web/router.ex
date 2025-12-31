@@ -48,11 +48,21 @@ defmodule UspAvaliaWeb.Router do
 
     get "/", HomeController, :redirect_to_disciplinas
 
-    scope "/professores" do
-      live_session :professores,
-        on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+    live_session :with_scope,
+      on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
+      scope "/professores" do
         live "/", ProfessorLive.Index, :index
         live "/:id", ProfessorLive.Show, :show
+      end
+
+      scope "/disciplinas" do
+        live "/", DisciplinaLive.Index, :index
+        live "/:codigo", DisciplinaLive.Show, :show
+        live "/:codigo/professores/:professor_id", DisciplinaLive.Avaliacao, :show
+        live "/:codigo/professores/:professor_id/avaliar", DisciplinaLive.Avaliar
+
+        live "/:codigo/professores/:professor_id/avaliacoes/:avaliacao_id",
+             DisciplinaLive.Avaliacao.Show
       end
     end
 
@@ -61,19 +71,6 @@ defmodule UspAvaliaWeb.Router do
         on_mount: [{UspAvaliaWeb.UserAuth, :require_authenticated}] do
         live "/verificar", ProfileLive.VerificarForm, :new
         live "/api", ProfileLive.ApiForm, :new
-      end
-    end
-
-    scope "/disciplinas" do
-      live_session :disciplinas,
-        on_mount: [{UspAvaliaWeb.UserAuth, :mount_current_scope}] do
-        live "/", DisciplinaLive.Index, :index
-        live "/:codigo", DisciplinaLive.Show, :show
-        live "/:codigo/professores/:professor_id", DisciplinaLive.Avaliacao, :show
-        live "/:codigo/professores/:professor_id/avaliar", DisciplinaLive.Avaliar
-
-        live "/:codigo/professores/:professor_id/avaliacoes/:avaliacao_id",
-             DisciplinaLive.Avaliacao.Show
       end
     end
 

@@ -76,7 +76,20 @@ defmodule UspAvaliaWeb.Layouts do
         <.link navigate="/disciplinas" class="btn btn-ghost text-xl">USP avalia</.link>
       </div>
       <div class="navbar-end">
-        <ul class="menu menu-horizontal px-1 space-x-4 items-center"></ul>
+        <ul class="menu menu-horizontal px-1">
+          <li>
+            <.link navigate="/professores" class="flex items-center gap-2">
+              <.icon name="hero-academic-cap" class="size-5" />
+              <span>Professores</span>
+            </.link>
+          </li>
+          <li>
+            <.link navigate="/disciplinas" class="flex items-center gap-2">
+              <.icon name="hero-book-open" class="size-5" />
+              <span>Disciplinas</span>
+            </.link>
+          </li>
+        </ul>
       </div>
     </div>
 
