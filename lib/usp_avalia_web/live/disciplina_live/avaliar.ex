@@ -99,6 +99,13 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
 
         {:noreply, socket}
 
+      {:error, :unauthorized} ->
+        socket =
+          socket
+          |> put_flash(:error, "Usuário não autorizado para criar avaliação.")
+
+        {:noreply, socket}
+
       {:error, changeset} ->
         IO.inspect(changeset.errors, label: "Errors")
 

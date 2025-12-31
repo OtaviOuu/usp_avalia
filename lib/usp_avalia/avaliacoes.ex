@@ -4,6 +4,15 @@ defmodule UspAvalia.Avaliacoes do
   # auth podre. Melhor manter um modulo de auth para cada dominio e apneas embrulhar a chamada
   def authorize(:create_avaliacao, %{user: %{verified: true}} = _user, _), do: :ok
   def authorize(:create_avaliacao, %{user: %{is_admin: true}} = _user, _), do: :ok
+
+  def authorize(:create_avaliacao, %{user: %{email: email}}, _) do
+    if String.ends_with?(email, "@usp.br") do
+      :ok
+    else
+      {:error, :unauthorized}
+    end
+  end
+
   def authorize(:create_avaliacao, _, _), do: false
 
   alias UspAvalia.Avaliacoes.Repo
