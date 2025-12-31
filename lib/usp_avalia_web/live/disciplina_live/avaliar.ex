@@ -21,6 +21,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
 
     socket =
       socket
+      |> assign(:professor_disciplina, professor_disciplina)
       |> assign(:disciplina, professor_disciplina.disciplina)
       |> assign(:professor, professor_disciplina.professor)
       |> assign(:form_avaliacao, change_avaliacao |> to_form(as: :avaliacao))
@@ -87,7 +88,7 @@ defmodule UspAvaliaWeb.DisciplinaLive.Avaliar do
       |> Map.put("professor_id", socket.assigns.professor.id)
       |> Map.put("disciplina_codigo", socket.assigns.disciplina.codigo)
 
-    case Avaliacoes.create_avaliacao(scope, attrs) do
+    case Avaliacoes.create_avaliacao(scope, attrs, socket.assigns.professor_disciplina) do
       {:ok, _avaliacao} ->
         socket =
           socket

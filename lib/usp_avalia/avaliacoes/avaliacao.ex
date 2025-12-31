@@ -47,7 +47,6 @@ defmodule UspAvalia.Avaliacoes.Avaliacao do
     %__MODULE__{}
     |> cast(attrs, @all_fields)
     |> validate_required(@required_fields)
-    |> validate_is_email_usp(scope)
     |> validate_comentarios
     |> validate_notas
     |> relate(scope)
@@ -69,13 +68,5 @@ defmodule UspAvalia.Avaliacoes.Avaliacao do
     |> validate_length(:comentario_avaliacao, min: 10, max: 500)
     |> validate_length(:comentario_aula, min: 10, max: 500)
     |> validate_length(:comentario_cobra_presenca, min: 10, max: 500)
-  end
-
-  defp validate_is_email_usp(changeset, %{user: %{email: email} = _scope}) do
-    if String.ends_with?(email, "@usp.br") do
-      changeset
-    else
-      add_error(changeset, :author, "must have a USP email")
-    end
   end
 end

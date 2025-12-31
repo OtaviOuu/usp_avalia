@@ -11,6 +11,7 @@ defmodule UspAvalia.Accounts.User do
     field :authenticated_at, :utc_datetime, virtual: true
     field :is_admin, :boolean, default: false
     field :is_oauth_user, :boolean, default: false
+    has_many :avaliacoes, UspAvalia.Avaliacoes.Avaliacao, foreign_key: :author_id
     timestamps(type: :utc_datetime)
   end
 

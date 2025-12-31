@@ -185,7 +185,12 @@ defmodule UspAvalia.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+
+    with {user, token_inserted_at} <- Repo.one(query) do
+      user = Repo.preload(user, :avaliacoes)
+
+      {user, token_inserted_at}
+    end
   end
 
   @doc """

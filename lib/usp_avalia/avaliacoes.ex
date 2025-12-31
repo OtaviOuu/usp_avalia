@@ -1,22 +1,31 @@
 defmodule UspAvalia.Avaliacoes do
   @behaviour Bodyguard.Policy
 
+  alias UspAvalia.Avaliacoes.Repo
+  alias UspAvalia.Avaliacoes
+  alias UspAvalia.Avaliacoes.ProfessoreDisciplina
+
   # auth podre. Melhor manter um modulo de auth para cada dominio e apneas embrulhar a chamada
-  def authorize(:create_avaliacao, %{user: %{verified: true}} = _user, _), do: :ok
   def authorize(:create_avaliacao, %{user: %{is_admin: true}} = _user, _), do: :ok
 
-  def authorize(:create_avaliacao, %{user: %{email: email}}, _) do
-    if String.ends_with?(email, "@usp.br") do
+  def authorize(
+        :create_avaliacao,
+        %{user: %{email: email, avaliacoes: avaliacoes}},
+        %ProfessoreDisciplina{} = pd
+      ) do
+    with false <-
+           Enum.any?(avaliacoes, fn a ->
+             a.disciplina_codigo == pd.disciplina_codigo and
+               a.professor_id == pd.professor_id
+           end),
+         true <- String.ends_with?(email, "@usp.br") do
       :ok
     else
-      {:error, :unauthorized}
+      _ -> false
     end
   end
 
   def authorize(:create_avaliacao, _, _), do: false
-
-  alias UspAvalia.Avaliacoes.Repo
-  alias UspAvalia.Avaliacoes
 
   defdelegate list_disciplinas, to: Repo.Disciplina, as: :get_all
 
@@ -30,8 +39,8 @@ defmodule UspAvalia.Avaliacoes do
     to: Repo.Avaliacao,
     as: :list_by_code_and_professor
 
-  def create_avaliacao(scope, attrs) do
-    with :ok <- Bodyguard.permit(__MODULE__, :create_avaliacao, scope) do
+  def create_avaliacao(scope, attrs, %ProfessoreDisciplina{} = professor_disciplina) do
+    with :ok <- Bodyguard.permit(__MODULE__, :create_avaliacao, scope, professor_disciplina) do
       Avaliacoes.CreateAvaliacao.call(scope, attrs)
     end
   end
