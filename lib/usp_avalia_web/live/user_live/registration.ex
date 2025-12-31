@@ -8,19 +8,31 @@ defmodule UspAvaliaWeb.UserLive.Registration do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
-      <div class="mx-auto max-w-sm">
-        <div class="text-center">
-          <.header>
-            Registrar uma nova conta
-            <:subtitle>
-              Já possui uma conta?
-              <.link navigate={~p"/users/log-in"} class="font-semibold text-brand hover:underline">
-                Entrar
-              </.link>
-              para sua conta agora.
-            </:subtitle>
-          </.header>
-          <.google_auth_button />
+      <div class="min-h-[80vh] flex items-center justify-center px-4">
+        <div class="w-full max-w-sm rounded-xl border border-zinc-200 bg-white shadow-sm p-6 space-y-6">
+          <div class="text-center space-y-2">
+            <.header>
+              <p class="text-2xl font-semibold">
+                Registrar uma nova conta
+              </p>
+              <:subtitle>
+                <span class="text-sm text-zinc-500">
+                  Já possui uma conta?
+                  <.link
+                    navigate={~p"/users/log-in"}
+                    class="font-medium text-brand hover:underline"
+                  >
+                    Entrar
+                  </.link>
+                  agora.
+                </span>
+              </:subtitle>
+            </.header>
+          </div>
+
+          <div class="flex justify-center pt-2">
+            <.google_auth_button />
+          </div>
         </div>
       </div>
     </Layouts.app>
