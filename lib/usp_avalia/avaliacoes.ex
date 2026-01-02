@@ -5,7 +5,11 @@ defmodule UspAvalia.Avaliacoes do
   alias UspAvalia.Avaliacoes
   alias UspAvalia.Avaliacoes.ProfessoreDisciplina
 
+  @usp_mail_domain "@usp.br"
+
   # auth podre. Melhor manter um modulo de auth para cada dominio e apneas embrulhar a chamada
+
+  # 2.0 - bão talvez
   def authorize(:create_avaliacao, %{user: %{is_admin: true}} = _user, _), do: :ok
 
   def authorize(
@@ -13,12 +17,8 @@ defmodule UspAvalia.Avaliacoes do
         %{user: %{email: email, avaliacoes: avaliacoes}},
         %ProfessoreDisciplina{} = pd
       ) do
-    with false <-
-           Enum.any?(avaliacoes, fn a ->
-             a.disciplina_codigo == pd.disciplina_codigo and
-               a.professor_id == pd.professor_id
-           end),
-         true <- String.ends_with?(email, "@usp.br") do
+    with false <- has_user_reviewed_the_disciplina_professor?(avaliacoes, pd),
+         true <- String.ends_with?(email, @usp_mail_domain) do
       :ok
     else
       _ -> false
@@ -26,6 +26,13 @@ defmodule UspAvalia.Avaliacoes do
   end
 
   def authorize(:create_avaliacao, _, _), do: false
+
+  defp has_user_reviewed_the_disciplina_professor?(avaliacoes, professor_disciplina) do
+    Enum.any?(avaliacoes, fn a ->
+      a.disciplina_codigo == professor_disciplina.disciplina_codigo and
+        a.professor_id == professor_disciplina.professor_id
+    end)
+  end
 
   defdelegate list_disciplinas, to: Repo.Disciplina, as: :get_all
 
