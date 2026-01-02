@@ -13,7 +13,37 @@ defmodule UspAvaliaWeb.ProfessorLive.Index do
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <h1>Professor</h1>
       <div class="overflow-x-auto">
-        <.professores_table professores={@professores} />
+        <div class="flex flex-col items-center gap-8">
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-20 card bg-base-100 shadow-xl p-10">
+            <div :for={_professor <- 1..10} class="flex gap-4">
+              <div class="avatar">
+                <div class="w-24 rounded-full">
+                  <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <h3 class="font-bold">Tom Lowry</h3>
+
+                <span class="text-sm">UI/UX Designer</span>
+
+                <div class="flex text-accent text-xs">
+                  <a class="btn btn-ghost btn-sm btn-circle">
+                    <.icon name="hero-link" class="size-5" />
+                  </a>
+
+                  <a class="btn btn-ghost btn-sm btn-circle">
+                    <.icon name="hero-link" class="size-5" />
+                  </a>
+
+                  <a class="btn btn-ghost btn-sm btn-circle">
+                    <.icon name="hero-link" class="size-5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Layouts.app>
     """
