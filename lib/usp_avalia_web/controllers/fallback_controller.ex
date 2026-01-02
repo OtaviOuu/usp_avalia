@@ -21,4 +21,32 @@ defmodule UspAvaliaWeb.FallbackController do
     |> put_view(html: UspAvaliaWeb.ErrorHTML, json: UspAvaliaWeb.ErrorJSON)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :forbidden}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(html: UspAvaliaWeb.ErrorHTML, json: UspAvaliaWeb.ErrorJSON)
+    |> render(:"403")
+  end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(html: UspAvaliaWeb.ErrorHTML, json: UspAvaliaWeb.ErrorJSON)
+    |> render(:"401")
+  end
+
+  def call(conn, {:error, :bad_request}) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(html: UspAvaliaWeb.ErrorHTML, json: UspAvaliaWeb.ErrorJSON)
+    |> render(:"400")
+  end
+
+  def call(conn, _) do
+    conn
+    |> put_status(:internal_server_error)
+    |> put_view(html: UspAvaliaWeb.ErrorHTML, json: UspAvaliaWeb.ErrorJSON)
+    |> render(:"500")
+  end
 end

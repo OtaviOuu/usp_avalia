@@ -23,7 +23,13 @@ defmodule UspAvaliaWeb.Router do
 
     get "/disciplinas", DisciplinasController, :index
     get "/disciplinas/:code", DisciplinasController, :show
+
+    get "/disciplinas/:code/professores/:professor_id",
+        ProfessorDisciplinaController,
+        :show
+
     get "/professores", ProfessoresController, :index
+    get "/professores/:id", ProfessoresController, :show
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
